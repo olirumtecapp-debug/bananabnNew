@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
 import { Bot, Users, BookOpen, BarChart3, Sparkles } from "lucide-react";
-import { getPrefs, setPrefs } from "@/lib/storage";
+import { getPlayerId, getPrefs, setPrefs } from "@/lib/storage";
 import { createRoomFn, joinRoomFn } from "@/lib/mico.functions";
 import { toast, Toaster } from "sonner";
 
@@ -44,7 +44,7 @@ function Home() {
     }
     setBusy(true);
     try {
-      const res = await createRoomFn({ data: { name: n } });
+      const res = await createRoomFn({ data: { name: n, playerId: getPlayerId() } });
       navigate({ to: "/sala/$codigo", params: { codigo: res.code } });
     } catch (e) {
       toast.error("Não foi possível criar a sala. Tente novamente.");
@@ -63,7 +63,7 @@ function Home() {
     }
     setBusy(true);
     try {
-      await joinRoomFn({ data: { name: n, code: c } });
+      await joinRoomFn({ data: { name: n, code: c, playerId: getPlayerId() } });
       navigate({ to: "/sala/$codigo", params: { codigo: c } });
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Erro ao entrar na sala.";

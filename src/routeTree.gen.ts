@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TutorialRouteImport } from './routes/tutorial'
 import { Route as EstatisticasRouteImport } from './routes/estatisticas'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalaCodigoRouteImport } from './routes/sala.$codigo'
+import { Route as JogarIaRouteImport } from './routes/jogar.ia'
 
 const TutorialRoute = TutorialRouteImport.update({
   id: '/tutorial',
@@ -28,35 +30,59 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalaCodigoRoute = SalaCodigoRouteImport.update({
+  id: '/sala/$codigo',
+  path: '/sala/$codigo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogarIaRoute = JogarIaRouteImport.update({
+  id: '/jogar/ia',
+  path: '/jogar/ia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
   '/tutorial': typeof TutorialRoute
+  '/jogar/ia': typeof JogarIaRoute
+  '/sala/$codigo': typeof SalaCodigoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
   '/tutorial': typeof TutorialRoute
+  '/jogar/ia': typeof JogarIaRoute
+  '/sala/$codigo': typeof SalaCodigoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
   '/tutorial': typeof TutorialRoute
+  '/jogar/ia': typeof JogarIaRoute
+  '/sala/$codigo': typeof SalaCodigoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/estatisticas' | '/tutorial'
+  fullPaths: '/' | '/estatisticas' | '/tutorial' | '/jogar/ia' | '/sala/$codigo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/estatisticas' | '/tutorial'
-  id: '__root__' | '/' | '/estatisticas' | '/tutorial'
+  to: '/' | '/estatisticas' | '/tutorial' | '/jogar/ia' | '/sala/$codigo'
+  id:
+    | '__root__'
+    | '/'
+    | '/estatisticas'
+    | '/tutorial'
+    | '/jogar/ia'
+    | '/sala/$codigo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EstatisticasRoute: typeof EstatisticasRoute
   TutorialRoute: typeof TutorialRoute
+  JogarIaRoute: typeof JogarIaRoute
+  SalaCodigoRoute: typeof SalaCodigoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +108,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sala/$codigo': {
+      id: '/sala/$codigo'
+      path: '/sala/$codigo'
+      fullPath: '/sala/$codigo'
+      preLoaderRoute: typeof SalaCodigoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogar/ia': {
+      id: '/jogar/ia'
+      path: '/jogar/ia'
+      fullPath: '/jogar/ia'
+      preLoaderRoute: typeof JogarIaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +129,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EstatisticasRoute: EstatisticasRoute,
   TutorialRoute: TutorialRoute,
+  JogarIaRoute: JogarIaRoute,
+  SalaCodigoRoute: SalaCodigoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
