@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TutorialRouteImport } from './routes/tutorial'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as EstatisticasRouteImport } from './routes/estatisticas'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalaCodigoRouteImport } from './routes/sala.$codigo'
@@ -18,6 +19,11 @@ import { Route as JogarIaRouteImport } from './routes/jogar.ia'
 const TutorialRoute = TutorialRouteImport.update({
   id: '/tutorial',
   path: '/tutorial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EstatisticasRoute = EstatisticasRouteImport.update({
@@ -44,6 +50,7 @@ const JogarIaRoute = JogarIaRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tutorial': typeof TutorialRoute
   '/jogar/ia': typeof JogarIaRoute
   '/sala/$codigo': typeof SalaCodigoRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tutorial': typeof TutorialRoute
   '/jogar/ia': typeof JogarIaRoute
   '/sala/$codigo': typeof SalaCodigoRoute
@@ -59,19 +67,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tutorial': typeof TutorialRoute
   '/jogar/ia': typeof JogarIaRoute
   '/sala/$codigo': typeof SalaCodigoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/estatisticas' | '/tutorial' | '/jogar/ia' | '/sala/$codigo'
+  fullPaths:
+    | '/'
+    | '/estatisticas'
+    | '/sitemap.xml'
+    | '/tutorial'
+    | '/jogar/ia'
+    | '/sala/$codigo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/estatisticas' | '/tutorial' | '/jogar/ia' | '/sala/$codigo'
+  to:
+    | '/'
+    | '/estatisticas'
+    | '/sitemap.xml'
+    | '/tutorial'
+    | '/jogar/ia'
+    | '/sala/$codigo'
   id:
     | '__root__'
     | '/'
     | '/estatisticas'
+    | '/sitemap.xml'
     | '/tutorial'
     | '/jogar/ia'
     | '/sala/$codigo'
@@ -80,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EstatisticasRoute: typeof EstatisticasRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TutorialRoute: typeof TutorialRoute
   JogarIaRoute: typeof JogarIaRoute
   SalaCodigoRoute: typeof SalaCodigoRoute
@@ -92,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/tutorial'
       fullPath: '/tutorial'
       preLoaderRoute: typeof TutorialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/estatisticas': {
@@ -128,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EstatisticasRoute: EstatisticasRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TutorialRoute: TutorialRoute,
   JogarIaRoute: JogarIaRoute,
   SalaCodigoRoute: SalaCodigoRoute,
