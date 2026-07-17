@@ -74,15 +74,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#1c4a3a" },
-      { title: "Mico — Jogo de cartas online e offline em português" },
+      { name: "theme-color", content: "#ffd6e7" },
+      { title: "Mico — Jogo de cartas de animais em português" },
       {
         name: "description",
         content:
-          "Jogue Mico (Old Maid) em português: partidas rápidas contra a IA ou multiplayer online por código de sala. Escolha manual das cartas, pares na mesa e regras tradicionais.",
+          "Jogue Mico em português: partidas rápidas contra a IA ou multiplayer online por código de sala. Cartas de animais fofos, escolha manual e regras tradicionais.",
       },
       { name: "author", content: "Mico Game" },
-      { property: "og:title", content: "Mico — Jogo de cartas online" },
+      { property: "og:title", content: "Mico — Jogo de cartas de animais" },
       {
         property: "og:description",
         content: "Jogue Mico contra a IA ou com amigos por código de sala. Grátis, em português.",
@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
