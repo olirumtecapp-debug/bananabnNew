@@ -1,23 +1,51 @@
 /**
- * Motor puro do jogo Mico (Old Maid).
+ * Motor puro do jogo Mico (versão tradicional infantil).
  * Funções sem efeitos colaterais — usado tanto no modo IA quanto no multiplayer.
  *
  * Regras:
- *  - Baralho de 52 cartas menos um Valete (fica 1 carta sem par = o "Mico").
- *  - Distribuição igualitária entre os jogadores.
+ *  - Baralho de 13 animais em pares (26 cartas) menos uma carta = 25 no total.
+ *    Sobra 1 carta sem par: o "Mico" (macaquinho solitário).
+ *  - Distribuição igualitária entre os jogadores (o resto fica com o primeiro).
  *  - Cada jogador descarta automaticamente os pares que já tem em mãos.
- *  - Na sua vez, o jogador puxa 1 carta (sem ver) do jogador à sua esquerda.
- *  - Se formar par com uma carta que já tinha, descarta o par na mesa.
- *  - Quem terminar sem cartas sai do jogo (venceu). O último com o Mico perde.
+ *  - Na sua vez, o jogador puxa 1 carta (sem ver) do próximo jogador.
+ *  - Se formar par, descarta o par na mesa.
+ *  - Quem terminar sem cartas sai do jogo (venceu). Quem ficar com o Mico perde.
  */
 
-export type Suit = "♠" | "♥" | "♦" | "♣";
-export type Rank = "A" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "J" | "Q" | "K";
+export interface Animal {
+  id: string;      // ex: "gato", "cachorro", "mico"
+  name: string;    // rótulo em pt-BR
+  emoji: string;   // ilustração
+  color: string;   // cor de fundo da carta (var CSS)
+}
+
+export const ANIMALS: Animal[] = [
+  { id: "gato",       name: "Gato",       emoji: "🐱", color: "var(--pastel-pink)" },
+  { id: "cachorro",   name: "Cachorro",   emoji: "🐶", color: "var(--pastel-peach)" },
+  { id: "coelho",     name: "Coelho",     emoji: "🐰", color: "var(--pastel-rose)" },
+  { id: "urso",       name: "Urso",       emoji: "🐻", color: "var(--pastel-caramel)" },
+  { id: "panda",      name: "Panda",      emoji: "🐼", color: "var(--pastel-cloud)" },
+  { id: "raposa",     name: "Raposa",     emoji: "🦊", color: "var(--pastel-orange)" },
+  { id: "leao",       name: "Leão",       emoji: "🦁", color: "var(--pastel-yellow)" },
+  { id: "tigre",      name: "Tigre",      emoji: "🐯", color: "var(--pastel-tangerine)" },
+  { id: "sapo",       name: "Sapo",       emoji: "🐸", color: "var(--pastel-lime)" },
+  { id: "pinguim",    name: "Pinguim",    emoji: "🐧", color: "var(--pastel-sky)" },
+  { id: "unicornio",  name: "Unicórnio",  emoji: "🦄", color: "var(--pastel-lavender)" },
+  { id: "polvo",      name: "Polvo",      emoji: "🐙", color: "var(--pastel-berry)" },
+  { id: "elefante",   name: "Elefante",   emoji: "🐘", color: "var(--pastel-mint)" },
+];
+
+export const MICO_ANIMAL: Animal = {
+  id: "mico",
+  name: "Mico",
+  emoji: "🐒",
+  color: "var(--pastel-banana)",
+};
 
 export interface Card {
-  id: string;         // ex: "H-7", "S-K", "MICO"
-  rank: Rank | "MICO";
-  suit: Suit | null;  // null para o Mico
+  id: string;       // único: "gato-1", "gato-2", "mico"
+  animalId: string; // usado para formar pares
+  animal: Animal;
   isMico: boolean;
 }
 
@@ -25,18 +53,18 @@ export interface Player {
   id: string;
   name: string;
   isBot: boolean;
-  hand: Card[];       // cartas na mão (viradas para baixo p/ adversários)
-  pairs: Card[][];    // pares já descartados na mesa
-  finished: boolean;  // saiu do jogo sem o Mico (venceu)
+  hand: Card[];
+  pairs: Card[][];
+  finished: boolean;
 }
 
 export interface GameState {
   players: Player[];
-  turnIndex: number;   // quem joga agora (índice em players)
-  targetIndex: number; // de quem ele vai puxar (à esquerda do turn)
+  turnIndex: number;
+  targetIndex: number;
   status: "playing" | "finished";
-  loserId: string | null;    // quem ficou com o Mico
-  winnersOrder: string[];    // ids na ordem em que zeraram a mão
+  loserId: string | null;
+  winnersOrder: string[];
   lastEvent: GameEvent | null;
 }
 
@@ -47,23 +75,19 @@ export type GameEvent =
   | { kind: "finish"; playerId: string }
   | { kind: "game-over"; loserId: string };
 
-const SUITS: Suit[] = ["♠", "♥", "♦", "♣"];
-const RANKS: Rank[] = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Q", "K"]; // J excluído; sobra 1 J = Mico
-
-/** Baralho de Mico: 52 cartas - 3 Valetes (removemos J♠, J♥, J♦), sobra J♣ = Mico. */
+/** Baralho: 13 animais × 2 = 26 cartas, menos 1 par (fica 1 solo) + 1 Mico = 25 no total. */
 export function buildDeck(): Card[] {
   const deck: Card[] = [];
-  for (const rank of RANKS) {
-    for (const suit of SUITS) {
-      deck.push({ id: `${suit}-${rank}`, rank, suit, isMico: false });
-    }
+  for (const a of ANIMALS) {
+    deck.push({ id: `${a.id}-1`, animalId: a.id, animal: a, isMico: false });
+    deck.push({ id: `${a.id}-2`, animalId: a.id, animal: a, isMico: false });
   }
-  // O Mico
-  deck.push({ id: "MICO", rank: "MICO", suit: null, isMico: true });
+  // O Mico entra como carta ímpar (sem par possível)
+  deck.push({ id: "mico", animalId: "mico", animal: MICO_ANIMAL, isMico: true });
   return deck;
 }
 
-/** Fisher–Yates com RNG opcional (para replays determinísticos se preciso). */
+/** Fisher–Yates com RNG opcional. */
 export function shuffle<T>(arr: T[], rng: () => number = Math.random): T[] {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -73,7 +97,6 @@ export function shuffle<T>(arr: T[], rng: () => number = Math.random): T[] {
   return a;
 }
 
-/** Cria um estado inicial. Distribui as cartas e descarta os pares iniciais. */
 export function createGame(playerSpecs: { id: string; name: string; isBot: boolean }[]): GameState {
   const deck = shuffle(buildDeck());
   const players: Player[] = playerSpecs.map((p) => ({
@@ -85,12 +108,10 @@ export function createGame(playerSpecs: { id: string; name: string; isBot: boole
     finished: false,
   }));
 
-  // Distribui uma a uma
   for (let i = 0; i < deck.length; i++) {
     players[i % players.length].hand.push(deck[i]);
   }
 
-  // Descarte automático dos pares iniciais
   for (const p of players) {
     const { hand, pairs } = extractPairs(p.hand);
     p.hand = hand;
@@ -107,23 +128,23 @@ export function createGame(playerSpecs: { id: string; name: string; isBot: boole
     lastEvent: { kind: "deal" },
   };
 
-  // Se algum jogador já zerou (raro mas possível), avança
   checkFinished(state);
   advanceTurnIfNeeded(state);
   return state;
 }
 
-/** Extrai pares de uma mão baseando-se apenas no `rank`. Devolve mão restante + pares. */
+/** Agrupa por animalId. O Mico nunca casa (é único). */
 export function extractPairs(hand: Card[]): { hand: Card[]; pairs: Card[][] } {
-  const byRank = new Map<string, Card[]>();
+  const byAnimal = new Map<string, Card[]>();
   for (const c of hand) {
-    const k = c.rank;
-    if (!byRank.has(k)) byRank.set(k, []);
-    byRank.get(k)!.push(c);
+    if (c.isMico) continue; // mico jamais forma par
+    const k = c.animalId;
+    if (!byAnimal.has(k)) byAnimal.set(k, []);
+    byAnimal.get(k)!.push(c);
   }
   const pairs: Card[][] = [];
-  const remaining: Card[] = [];
-  for (const [, cards] of byRank) {
+  const remaining: Card[] = hand.filter((c) => c.isMico);
+  for (const [, cards] of byAnimal) {
     while (cards.length >= 2) {
       pairs.push([cards.shift()!, cards.shift()!]);
     }
@@ -132,19 +153,17 @@ export function extractPairs(hand: Card[]): { hand: Card[]; pairs: Card[][] } {
   return { hand: remaining, pairs };
 }
 
-/** Executa uma jogada: o jogador atual puxa a carta no índice `cardIndex` da mão do alvo. */
 export function playTurn(state: GameState, cardIndex: number): GameState {
   if (state.status !== "playing") return state;
   const next: GameState = structuredClone(state);
   const turn = next.players[next.turnIndex];
   const target = next.players[next.targetIndex];
 
-  if (!target.hand.length) return state; // nada a fazer
+  if (!target.hand.length) return state;
   const safeIndex = Math.max(0, Math.min(cardIndex, target.hand.length - 1));
   const [taken] = target.hand.splice(safeIndex, 1);
   turn.hand.push(taken);
 
-  // Descarta par (se formou)
   const { hand, pairs } = extractPairs(turn.hand);
   const formedPair = pairs.length > 0 ? (pairs[pairs.length - 1] as [Card, Card]) : null;
   turn.hand = hand;
@@ -166,7 +185,6 @@ export function playTurn(state: GameState, cardIndex: number): GameState {
   return next;
 }
 
-/** Marca jogadores que zeraram como finalizados; se sobra 1 (com o Mico), fim de jogo. */
 function checkFinished(state: GameState) {
   for (const p of state.players) {
     if (!p.finished && p.hand.length === 0) {
@@ -182,7 +200,6 @@ function checkFinished(state: GameState) {
   }
 }
 
-/** Avança turno para o próximo jogador ativo e recalcula alvo (próximo ativo depois dele). */
 function advanceTurn(state: GameState) {
   const n = state.players.length;
   let i = state.turnIndex;
@@ -196,7 +213,6 @@ function advanceTurn(state: GameState) {
   recomputeTarget(state);
 }
 
-/** Se o alvo atual acabou ou é o próprio jogador da vez, ajusta. */
 function advanceTurnIfNeeded(state: GameState) {
   if (state.status !== "playing") return;
   if (state.players[state.turnIndex].finished) advanceTurn(state);
@@ -216,22 +232,11 @@ function recomputeTarget(state: GameState) {
   state.targetIndex = state.turnIndex;
 }
 
-/** Escolha da IA: aleatória (o Mico se camufla naturalmente). */
 export function aiPick(state: GameState): number {
   const target = state.players[state.targetIndex];
   return Math.floor(Math.random() * Math.max(1, target.hand.length));
 }
 
-/** Rótulo bonito da carta em pt-BR (para a UI). */
 export function cardLabel(card: Card): string {
-  if (card.isMico) return "Mico";
-  const map: Record<Rank, string> = {
-    A: "Á", "2": "2", "3": "3", "4": "4", "5": "5", "6": "6",
-    "7": "7", "8": "8", "9": "9", "10": "10", J: "J", Q: "D", K: "R",
-  };
-  return map[card.rank as Rank];
-}
-
-export function isRedSuit(suit: Suit | null): boolean {
-  return suit === "♥" || suit === "♦";
+  return card.animal.name;
 }
