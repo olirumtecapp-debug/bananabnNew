@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Mico — design system "Fofinho / Infantil"
- * Pastéis alegres, cantos arredondados, tipografia redonda.
+ * Mico — design system "Cassino moderno"
+ * Verde feltro + dourado + cartas cor de marfim.
  */
 
 @theme inline {
@@ -42,51 +42,44 @@
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-red: var(--card-red);
-  --font-display: "Fredoka", "Baloo 2", "Comic Sans MS", system-ui, sans-serif;
+  --font-display: "Playfair Display", "Georgia", serif;
 }
 
 :root {
-  --radius: 1rem;
+  --radius: 0.75rem;
 
-  /* Base clara e fofa */
-  --background: oklch(0.97 0.03 250);
-  --foreground: oklch(0.28 0.05 280);
+  --background: oklch(0.28 0.06 155);
+  --foreground: oklch(0.97 0.02 90);
 
-  /* "felt" reaproveitado como painéis: agora rosa claro / lilás */
-  --felt: oklch(0.94 0.04 320);
-  --felt-deep: oklch(0.99 0.02 320);
+  --felt: oklch(0.32 0.07 155);
+  --felt-deep: oklch(0.22 0.06 155);
+  --gold: oklch(0.82 0.14 82);
+  --gold-soft: oklch(0.72 0.11 82);
+  --paper: oklch(0.97 0.02 90);
+  --ink: oklch(0.18 0.02 260);
+  --card-red: oklch(0.55 0.22 25);
 
-  /* Primary = laranja alegre; accent = turquesa */
-  --primary: oklch(0.75 0.18 45);           /* laranja doce */
-  --primary-foreground: oklch(0.99 0.01 90);
-  --accent: oklch(0.78 0.14 210);           /* azul turquesa */
-  --accent-foreground: oklch(0.2 0.05 280);
+  --card: oklch(0.34 0.06 155);
+  --card-foreground: oklch(0.97 0.02 90);
+  --popover: oklch(0.24 0.05 155);
+  --popover-foreground: oklch(0.97 0.02 90);
 
-  /* Reutilização: "gold" agora é o rosa quente destaque */
-  --gold: oklch(0.72 0.2 15);               /* coral / rosa quente */
-  --gold-soft: oklch(0.85 0.14 15);
+  --primary: oklch(0.82 0.14 82);
+  --primary-foreground: oklch(0.18 0.05 155);
+  --secondary: oklch(0.38 0.06 155);
+  --secondary-foreground: oklch(0.97 0.02 90);
+  --muted: oklch(0.36 0.05 155);
+  --muted-foreground: oklch(0.78 0.02 90);
+  --accent: oklch(0.72 0.11 82);
+  --accent-foreground: oklch(0.18 0.05 155);
 
-  --paper: oklch(0.99 0.02 90);
-  --ink: oklch(0.24 0.06 285);
-  --card-red: oklch(0.6 0.22 25);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.98 0.02 90);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.82 0.14 82);
 
-  --card: oklch(0.99 0.02 320);
-  --card-foreground: oklch(0.24 0.06 285);
-  --popover: oklch(0.99 0.02 320);
-  --popover-foreground: oklch(0.24 0.06 285);
-
-  --secondary: oklch(0.9 0.05 200);
-  --secondary-foreground: oklch(0.24 0.06 285);
-  --muted: oklch(0.94 0.03 300);
-  --muted-foreground: oklch(0.5 0.05 285);
-
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.99 0.02 90);
-  --border: oklch(0.24 0.06 285 / 12%);
-  --input: oklch(0.24 0.06 285 / 15%);
-  --ring: oklch(0.75 0.18 45);
-
-  /* Cores pastéis para as cartas dos animais */
+  /* Cores pastéis das cartas dos animais (mantidas — combinam com o marfim) */
   --pastel-pink:      #ffd6e7;
   --pastel-peach:     #ffddb8;
   --pastel-rose:      #ffcada;
@@ -103,38 +96,37 @@
   --pastel-banana:    #fff5a8;
 }
 
-.dark {
-  --background: oklch(0.28 0.06 285);
-  --foreground: oklch(0.97 0.03 250);
+.light {
+  --background: oklch(0.97 0.02 90);
+  --foreground: oklch(0.18 0.05 155);
 
-  --felt: oklch(0.34 0.08 300);
-  --felt-deep: oklch(0.24 0.06 285);
+  --felt: oklch(0.55 0.13 155);
+  --felt-deep: oklch(0.42 0.11 155);
+  --gold: oklch(0.65 0.14 82);
+  --gold-soft: oklch(0.75 0.12 82);
+  --paper: oklch(0.99 0.01 90);
+  --ink: oklch(0.15 0.02 260);
+  --card-red: oklch(0.5 0.22 25);
 
-  --primary: oklch(0.78 0.17 45);
-  --primary-foreground: oklch(0.2 0.05 280);
-  --accent: oklch(0.72 0.15 200);
-  --accent-foreground: oklch(0.99 0.02 90);
-  --gold: oklch(0.75 0.2 15);
-  --gold-soft: oklch(0.8 0.15 15);
+  --card: oklch(0.99 0.01 90);
+  --card-foreground: oklch(0.18 0.05 155);
+  --popover: oklch(0.99 0.01 90);
+  --popover-foreground: oklch(0.18 0.05 155);
 
-  --paper: oklch(0.99 0.02 90);
-  --ink: oklch(0.2 0.05 280);
+  --primary: oklch(0.55 0.13 155);
+  --primary-foreground: oklch(0.99 0.01 90);
+  --secondary: oklch(0.92 0.02 90);
+  --secondary-foreground: oklch(0.18 0.05 155);
+  --muted: oklch(0.92 0.02 90);
+  --muted-foreground: oklch(0.45 0.03 155);
+  --accent: oklch(0.65 0.14 82);
+  --accent-foreground: oklch(0.99 0.01 90);
 
-  --card: oklch(0.34 0.08 300);
-  --card-foreground: oklch(0.97 0.03 250);
-  --popover: oklch(0.28 0.06 285);
-  --popover-foreground: oklch(0.97 0.03 250);
-
-  --secondary: oklch(0.4 0.07 220);
-  --secondary-foreground: oklch(0.97 0.03 250);
-  --muted: oklch(0.36 0.05 285);
-  --muted-foreground: oklch(0.78 0.03 285);
-
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.99 0.02 90);
-  --border: oklch(1 0 0 / 15%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.78 0.17 45);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0.01 90);
+  --border: oklch(0.18 0.05 155 / 15%);
+  --input: oklch(0.18 0.05 155 / 18%);
+  --ring: oklch(0.55 0.13 155);
 }
 
 @layer base {
@@ -147,20 +139,17 @@
   body {
     background-color: var(--color-background);
     background-image:
-      radial-gradient(circle at 15% 10%, #ffe0f0 0, transparent 40%),
-      radial-gradient(circle at 85% 15%, #d6ecff 0, transparent 40%),
-      radial-gradient(circle at 30% 90%, #fff4c9 0, transparent 40%),
-      radial-gradient(circle at 90% 80%, #d5f8e5 0, transparent 40%);
+      radial-gradient(ellipse at top, oklch(0.36 0.08 155 / 0.6), transparent 60%),
+      radial-gradient(ellipse at bottom, oklch(0.2 0.05 155 / 0.6), transparent 60%);
     color: var(--color-foreground);
-    font-family: "Fredoka", "Baloo 2", "Nunito", system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     padding: env(safe-area-inset-top) env(safe-area-inset-right)
              env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
-  .dark body {
+  .light body {
     background-image:
-      radial-gradient(circle at 15% 10%, oklch(0.4 0.1 320 / 0.4) 0, transparent 45%),
-      radial-gradient(circle at 85% 20%, oklch(0.4 0.1 220 / 0.4) 0, transparent 45%),
-      radial-gradient(circle at 50% 90%, oklch(0.4 0.1 45 / 0.35) 0, transparent 45%);
+      radial-gradient(ellipse at top, oklch(0.6 0.13 155 / 0.35), transparent 60%),
+      radial-gradient(ellipse at bottom, oklch(0.5 0.12 155 / 0.2), transparent 60%);
   }
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -171,42 +160,21 @@
 @layer utilities {
   .felt-bg {
     background:
-      radial-gradient(ellipse at top, #fff6d5 0%, transparent 60%),
-      radial-gradient(ellipse at bottom, #d9ecff 0%, transparent 60%);
-  }
-  .dark .felt-bg {
-    background:
-      radial-gradient(ellipse at top, oklch(0.4 0.1 45 / 0.4), transparent 60%),
-      radial-gradient(ellipse at bottom, oklch(0.35 0.1 285 / 0.5), transparent 60%);
+      radial-gradient(ellipse at center, var(--color-felt) 0%, var(--color-felt-deep) 100%);
   }
   .gold-text {
-    background: linear-gradient(135deg, var(--color-gold), var(--color-primary));
+    background: linear-gradient(135deg, var(--color-gold), oklch(0.92 0.12 90));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.4));
   }
   .card-shadow {
-    box-shadow:
-      0 8px 0 -2px rgba(0,0,0,0.06),
-      0 10px 24px -8px rgba(120, 60, 100, 0.35);
-  }
-  .pop-glow {
-    box-shadow:
-      0 0 0 4px var(--color-primary),
-      0 12px 28px -6px oklch(0.75 0.18 45 / 0.55);
+    box-shadow: 0 6px 20px -6px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.3);
   }
   .gold-glow {
-    box-shadow:
-      0 0 0 3px var(--color-primary),
-      0 10px 24px -8px oklch(0.75 0.18 45 / 0.5);
+    box-shadow: 0 0 0 2px var(--color-gold), 0 6px 20px -4px oklch(0.82 0.14 82 / 0.55);
   }
-  /* Balões flutuando no fundo, só decorativo */
-  .party-float {
-    animation: floaty 4s ease-in-out infinite;
-  }
-  @keyframes floaty {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50%      { transform: translateY(-8px) rotate(2deg); }
+  .pop-glow {
+    box-shadow: 0 0 0 3px var(--color-gold), 0 8px 22px -6px oklch(0.82 0.14 82 / 0.55);
   }
 }
