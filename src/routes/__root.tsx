@@ -75,20 +75,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#1c4a3a" },
-      { title: "Mico — Jogo de cartas de animais em português" },
+      { title: "Mico — Menu principal" },
       {
         name: "description",
         content:
-          "Jogue Mico em português: partidas rápidas contra a IA ou multiplayer online por código de sala. Cartas de animais, escolha manual e regras tradicionais.",
+          "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código.",
       },
       { name: "author", content: "Mico Game" },
-      { property: "og:title", content: "Mico — Jogo de cartas de animais" },
+      { property: "og:title", content: "Mico — Menu principal" },
       {
         property: "og:description",
-        content: "Jogue Mico contra a IA ou com amigos por código de sala. Grátis, em português.",
+        content: "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Mico — Menu principal" },
+      { name: "twitter:description", content: "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/48022934-9abf-43c8-8c97-0e0dee42213d/id-preview-79b0d403--ab064cb8-d410-4adb-a5b4-10144239f9ea.lovable.app-1784280744437.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/48022934-9abf-43c8-8c97-0e0dee42213d/id-preview-79b0d403--ab064cb8-d410-4adb-a5b4-10144239f9ea.lovable.app-1784280744437.png" },
     ],
     links: [
       {
