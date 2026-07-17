@@ -10,23 +10,23 @@ interface CardProps {
   highlighted?: boolean;
 }
 
-/** Carta ilustrada com animal. Estilo fofo/infantil, cantos bem arredondados. */
+/** Carta com face em papel marfim e ilustração do animal. Dorso em verde/dourado. */
 export function Card({ card, faceDown = false, small = false, selectable, onClick, highlighted }: CardProps) {
   const showBack = faceDown || !card;
-  const w = small ? "w-11 h-16 sm:w-14 sm:h-20" : "w-20 h-28 sm:w-24 sm:h-32";
+  const w = small ? "w-10 h-14 sm:w-12 sm:h-16" : "w-16 h-24 sm:w-20 sm:h-28";
 
   return (
     <motion.button
       layout
-      whileHover={selectable ? { y: -10, scale: 1.06, rotate: -2 } : undefined}
-      whileTap={selectable ? { scale: 0.95 } : undefined}
+      whileHover={selectable ? { y: -8, scale: 1.04 } : undefined}
+      whileTap={selectable ? { scale: 0.97 } : undefined}
       onClick={selectable ? onClick : undefined}
       disabled={!selectable}
       className={[
         w,
-        "relative rounded-2xl card-shadow shrink-0 select-none",
+        "relative rounded-lg card-shadow shrink-0 select-none",
         selectable ? "cursor-pointer" : "cursor-default",
-        highlighted ? "pop-glow" : "",
+        highlighted ? "gold-glow" : "",
       ].join(" ")}
       aria-label={showBack ? "Carta virada" : `Carta ${cardLabel(card!)}`}
     >
@@ -37,15 +37,17 @@ export function Card({ card, faceDown = false, small = false, selectable, onClic
 
 function CardBack() {
   return (
-    <div className="w-full h-full rounded-2xl overflow-hidden bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] border-4 border-white/80 flex items-center justify-center">
+    <div className="w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-[oklch(0.35_0.08_155)] to-[oklch(0.18_0.05_155)] border border-[var(--color-gold)]/40 flex items-center justify-center">
       <div
-        className="w-[80%] h-[80%] rounded-xl border-2 border-white/70 flex items-center justify-center"
+        className="w-[85%] h-[85%] rounded-md border border-[var(--color-gold)]/50"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(45deg, rgba(255,255,255,0.25) 0 6px, transparent 6px 12px)",
+            "repeating-linear-gradient(45deg, oklch(0.82 0.14 82 / 0.15) 0 6px, transparent 6px 12px)",
         }}
       >
-        <span className="text-2xl sm:text-3xl drop-shadow">🎈</span>
+        <div className="w-full h-full flex items-center justify-center">
+          <span className="gold-text text-lg sm:text-xl font-bold" style={{ fontFamily: "var(--font-display, serif)" }}>M</span>
+        </div>
       </div>
     </div>
   );
@@ -54,17 +56,20 @@ function CardBack() {
 function CardFace({ card, small }: { card: GameCard; small?: boolean }) {
   return (
     <div
-      className="w-full h-full rounded-2xl border-4 border-white/90 flex flex-col items-center justify-center p-1"
-      style={{ background: card.animal.color }}
+      className="w-full h-full rounded-lg bg-[var(--color-paper)] text-[var(--color-ink)] p-1 flex flex-col items-center justify-between overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(180deg, ${card.animal.color} 0%, var(--color-paper) 70%)`,
+      }}
     >
-      <div className={small ? "text-2xl sm:text-3xl" : "text-4xl sm:text-5xl"}>
+      <span className={`${small ? "text-[9px]" : "text-[10px] sm:text-xs"} font-bold uppercase tracking-wide self-start leading-none`}>
+        {small ? card.animal.name.slice(0, 3) : card.animal.name}
+      </span>
+      <span className={small ? "text-xl sm:text-2xl" : "text-3xl sm:text-4xl"}>
         {card.animal.emoji}
-      </div>
-      {!small && (
-        <div className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide text-[var(--color-ink)]/80">
-          {card.animal.name}
-        </div>
-      )}
+      </span>
+      <span className={`${small ? "text-[9px]" : "text-[10px] sm:text-xs"} font-bold uppercase tracking-wide self-end rotate-180 leading-none`}>
+        {small ? card.animal.name.slice(0, 3) : card.animal.name}
+      </span>
     </div>
   );
 }
