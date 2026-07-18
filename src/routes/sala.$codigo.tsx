@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
 import { Hand } from "@/components/game/Hand";
 import { TablePairs } from "@/components/game/TablePairs";
-import { supabase } from "@/integrations/supabase/client";
 import { getPlayerId, getPrefs, recordResult } from "@/lib/storage";
 import { sfx } from "@/lib/sound";
 import {
+  getRoomStateFn,
   joinRoomFn,
   playCardFn,
   resetGameFn,
@@ -47,30 +47,25 @@ function Sala() {
     });
   }, [codigo]);
 
-  // Realtime: carrega estado inicial e escuta atualizações
+  // Polling: carrega estado inicial e mantém sincronizado via server function.
   useEffect(() => {
     let mounted = true;
-    async function loadInitial() {
-      const { data } = await supabase.from("rooms").select("state").eq("code", codigo).maybeSingle();
-      if (mounted && data) setState(data.state as unknown as RoomStateJSON);
-    }
-    loadInitial();
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-    const channel = supabase
-      .channel(`room-${codigo}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "rooms", filter: `code=eq.${codigo}` },
-        (payload) => {
-          const row = payload.new as { state: unknown };
-          setState(row.state as RoomStateJSON);
-        },
-      )
-      .subscribe();
+    async function tick() {
+      try {
+        const res = await getRoomStateFn({ data: { code: codigo } });
+        if (mounted && res) setState(res.state);
+      } catch {
+        // ignora falhas transitórias — próximo tick tenta de novo
+      }
+      if (mounted) timer = setTimeout(tick, 1500);
+    }
+    tick();
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      if (timer) clearTimeout(timer);
     };
   }, [codigo]);
 
