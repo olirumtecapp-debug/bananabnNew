@@ -10,7 +10,7 @@ import { toast, Toaster } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mico — Menu principal" },
+      { title: "Banana — Menu principal" },
       {
         name: "description",
         content:
@@ -84,8 +84,8 @@ function Home() {
           transition={{ type: "spring", stiffness: 120, damping: 18 }}
           className="text-center py-8 sm:py-14"
         >
-          <div className="text-6xl sm:text-8xl mb-2">🐒</div>
-          <h1 className="font-display text-5xl sm:text-7xl font-black gold-text">Mico</h1>
+          <div className="text-6xl sm:text-8xl mb-2">🍌</div>
+          <h1 className="font-display text-5xl sm:text-7xl font-black gold-text">Banana</h1>
           <p className="mt-3 text-[var(--color-muted-foreground)] text-sm sm:text-base max-w-xl mx-auto">
             O clássico jogo de cartas em português. Jogue contra a IA ou crie uma sala e chame os
             amigos.

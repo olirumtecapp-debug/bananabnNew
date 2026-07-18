@@ -25,7 +25,7 @@ export function TopBar({ title, showBack }: TopBarProps) {
         <span />
       )}
       <h1 className="truncate text-center font-display text-lg sm:text-xl gold-text">
-        {title ?? "Mico"}
+        {title ?? "Banana"}
       </h1>
       <div className="flex items-center gap-1 shrink-0">
         <button

@@ -4,11 +4,11 @@ import { TopBar } from "@/components/game/TopBar";
 export const Route = createFileRoute("/tutorial")({
   head: () => ({
     meta: [
-      { title: "Como jogar Mico — Regras" },
+      { title: "Como jogar Banana — Regras" },
       {
         name: "description",
         content:
-          "Aprenda as regras do Mico (Old Maid): distribuição, pares, escolha da carta e como vencer.",
+          "Aprenda as regras da Banana (Old Maid): distribuição, pares, escolha da carta e como vencer.",
       },
     ],
   }),
@@ -19,7 +19,7 @@ const steps = [
   {
     title: "1. O baralho",
     body:
-      "Usa-se um baralho comum de 52 cartas, do qual se removem 3 valetes — sobra apenas 1, que é o Mico. Nenhuma outra carta terá par para ele.",
+      "Usa-se um baralho comum de 52 cartas, do qual se removem 3 valetes — sobra apenas 1, que é a Banana. Nenhuma outra carta terá par para ele.",
   },
   {
     title: "2. Distribuição",
@@ -44,7 +44,7 @@ const steps = [
   {
     title: "6. Fim do jogo",
     body:
-      "Quem termina sem cartas sai vencedor. O último jogador, que ficou com o Mico, perde a rodada. Boa sorte — e cuidado ao puxar a última carta!",
+      "Quem termina sem cartas sai vencedor. O último jogador, que ficou com a Banana, perde a rodada. Boa sorte — e cuidado ao puxar a última carta!",
   },
 ];
 
@@ -54,8 +54,8 @@ function Tutorial() {
       <TopBar title="Como jogar" showBack />
       <main className="max-w-2xl mx-auto px-4 pb-16">
         <div className="text-center mb-6">
-          <div className="text-5xl">🐒</div>
-          <h1 className="font-display text-3xl sm:text-4xl gold-text">Regras do Mico</h1>
+          <div className="text-5xl">🍌</div>
+          <h1 className="font-display text-3xl sm:text-4xl gold-text">Regras da Banana</h1>
           <p className="text-sm text-[var(--color-muted-foreground)] mt-2">
             Rápido de aprender, viciante de jogar.
           </p>

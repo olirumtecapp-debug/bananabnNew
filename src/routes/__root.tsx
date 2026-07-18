@@ -19,7 +19,7 @@ function NotFoundComponent() {
         <h1 className="text-7xl font-black gold-text">404</h1>
         <h2 className="mt-4 text-xl font-semibold">Página não encontrada</h2>
         <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">
-          Este caminho não existe. Volte ao menu para jogar Mico.
+          Este caminho não existe. Volte ao menu para jogar Banana.
         </p>
         <div className="mt-6">
           <Link
@@ -75,21 +75,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#1c4a3a" },
-      { title: "Mico — Menu principal" },
+      { title: "Banana — Menu principal" },
       {
         name: "description",
         content:
           "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código.",
       },
-      { name: "author", content: "Mico Game" },
-      { property: "og:title", content: "Mico — Menu principal" },
+      { name: "author", content: "Banana Game" },
+      { property: "og:title", content: "Banana — Menu principal" },
       {
         property: "og:description",
         content: "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Mico — Menu principal" },
+      { name: "twitter:title", content: "Banana — Menu principal" },
       { name: "twitter:description", content: "Escolha um modo de jogo: vs IA, criar sala online ou entrar em sala com código." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/48022934-9abf-43c8-8c97-0e0dee42213d/id-preview-79b0d403--ab064cb8-d410-4adb-a5b4-10144239f9ea.lovable.app-1784280744437.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/48022934-9abf-43c8-8c97-0e0dee42213d/id-preview-79b0d403--ab064cb8-d410-4adb-a5b4-10144239f9ea.lovable.app-1784280744437.png" },
@@ -106,7 +106,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
