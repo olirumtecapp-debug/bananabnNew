@@ -42,7 +42,7 @@
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-red: var(--card-red);
-  --font-display: "Playfair Display", "Georgia", serif;
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
 }
 
 :root {
