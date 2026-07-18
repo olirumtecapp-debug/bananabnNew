@@ -20,10 +20,10 @@ import { toast, Toaster } from "sonner";
 export const Route = createFileRoute("/sala/$codigo")({
   head: ({ params }) => ({
     meta: [
-      { title: `Sala ${params.codigo} — Mico online` },
+      { title: `Sala ${params.codigo} — Banana online` },
       {
         name: "description",
-        content: "Sala multiplayer do Mico. Convide amigos com o código e joguem juntos online.",
+        content: "Sala multiplayer da Banana. Convide amigos com o código e joguem juntos online.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -317,9 +317,9 @@ function Playing({
               animate={{ scale: 1, y: 0 }}
               className="max-w-md w-full rounded-2xl bg-[var(--color-felt-deep)] border border-[var(--color-gold)]/50 p-6 text-center"
             >
-              <div className="text-6xl mb-2">{game.loserId === playerId ? "🐒" : "🏆"}</div>
+              <div className="text-6xl mb-2">{game.loserId === playerId ? "🍌" : "🏆"}</div>
               <h2 className="font-display text-3xl gold-text mb-1">
-                {game.loserId === playerId ? "Você pegou o Mico!" : "Fim da partida"}
+                {game.loserId === playerId ? "Você pegou a Banana!" : "Fim da partida"}
               </h2>
               <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
                 {game.loserId === playerId ? (

@@ -12,10 +12,10 @@ import { Trophy, Frown, RefreshCw, Users } from "lucide-react";
 export const Route = createFileRoute("/jogar/ia")({
   head: () => ({
     meta: [
-      { title: "Mico vs IA — Partida" },
+      { title: "Banana vs IA — Partida" },
       {
         name: "description",
-        content: "Jogue Mico contra a inteligência artificial. Escolha manualmente qual carta puxar.",
+        content: "Jogue Banana contra a inteligência artificial. Escolha manualmente qual carta puxar.",
       },
     ],
   }),
@@ -201,15 +201,15 @@ function EndModal({ state, onRestart }: { state: GameState; onRestart: () => voi
         animate={{ scale: 1, y: 0 }}
         className="max-w-md w-full rounded-2xl bg-[var(--color-felt-deep)] border border-[var(--color-gold)]/50 p-6 text-center"
       >
-        <div className="text-6xl mb-2">{won ? "🏆" : "🐒"}</div>
+        <div className="text-6xl mb-2">{won ? "🏆" : "🍌"}</div>
         <h2 className="font-display text-3xl gold-text mb-1">
-          {won ? "Você venceu!" : "Você pegou o Mico!"}
+          {won ? "Você venceu!" : "Você pegou a Banana!"}
         </h2>
         <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
           {won ? (
             <>
               <Trophy className="inline size-4 mr-1" />
-              Terminou sem o Mico. Boa jogada!
+              Terminou sem a Banana. Boa jogada!
             </>
           ) : (
             <>
@@ -251,7 +251,7 @@ function StartScreen({
     <div className="min-h-screen felt-bg">
       <TopBar title="Vs IA" showBack />
       <main className="max-w-md mx-auto px-4 py-10 text-center">
-        <div className="text-6xl mb-2">🐒</div>
+        <div className="text-6xl mb-2">🍌</div>
         <h1 className="font-display text-3xl gold-text mb-2">Partida contra a IA</h1>
         <p className="text-sm text-[var(--color-muted-foreground)] mb-6">
           Escolha quantos oponentes você quer enfrentar.

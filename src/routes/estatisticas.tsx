@@ -7,8 +7,8 @@ import { RotateCcw } from "lucide-react";
 export const Route = createFileRoute("/estatisticas")({
   head: () => ({
     meta: [
-      { title: "Estatísticas — Mico" },
-      { name: "description", content: "Seu histórico de partidas de Mico, salvo no navegador." },
+      { title: "Estatísticas — Banana" },
+      { name: "description", content: "Seu histórico de partidas de Banana, salvo no navegador." },
     ],
   }),
   component: Estatisticas,
