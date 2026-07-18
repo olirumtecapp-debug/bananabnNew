@@ -167,4 +167,13 @@ export const resetGameFn = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/** Lê o estado público da sala (usado no lugar do acesso direto à tabela). */
+export const getRoomStateFn = createServerFn({ method: "GET" })
+  .inputValidator((input) => z.object({ code: z.string().min(4).max(8) }).parse(input))
+  .handler(async ({ data }) => {
+    const room = await loadRoom(data.code);
+    if (!room) return null;
+    return { state: room.state as unknown as RoomStateJSON, updated_at: room.updated_at };
+  });
+
 export type { RoomStateJSON, LobbyPlayer };
