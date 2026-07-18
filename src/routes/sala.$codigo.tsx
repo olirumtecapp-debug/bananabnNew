@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
 import { Hand } from "@/components/game/Hand";
 import { TablePairs } from "@/components/game/TablePairs";
-import { supabase } from "@/integrations/supabase/client";
 import { getPlayerId, getPrefs, recordResult } from "@/lib/storage";
 import { sfx } from "@/lib/sound";
 import {
+  getRoomStateFn,
   joinRoomFn,
   playCardFn,
   resetGameFn,
