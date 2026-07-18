@@ -20,25 +20,25 @@ export interface Animal {
 }
 
 export const ANIMALS: Animal[] = [
-  { id: "gato",       name: "Gato",       emoji: "🐱", color: "var(--pastel-pink)" },
-  { id: "cachorro",   name: "Cachorro",   emoji: "🐶", color: "var(--pastel-peach)" },
-  { id: "coelho",     name: "Coelho",     emoji: "🐰", color: "var(--pastel-rose)" },
-  { id: "urso",       name: "Urso",       emoji: "🐻", color: "var(--pastel-caramel)" },
-  { id: "panda",      name: "Panda",      emoji: "🐼", color: "var(--pastel-cloud)" },
-  { id: "raposa",     name: "Raposa",     emoji: "🦊", color: "var(--pastel-orange)" },
-  { id: "leao",       name: "Leão",       emoji: "🦁", color: "var(--pastel-yellow)" },
-  { id: "tigre",      name: "Tigre",      emoji: "🐯", color: "var(--pastel-tangerine)" },
-  { id: "sapo",       name: "Sapo",       emoji: "🐸", color: "var(--pastel-lime)" },
-  { id: "pinguim",    name: "Pinguim",    emoji: "🐧", color: "var(--pastel-sky)" },
-  { id: "unicornio",  name: "Unicórnio",  emoji: "🦄", color: "var(--pastel-lavender)" },
-  { id: "polvo",      name: "Polvo",      emoji: "🐙", color: "var(--pastel-berry)" },
-  { id: "elefante",   name: "Elefante",   emoji: "🐘", color: "var(--pastel-mint)" },
+  { id: "morango",    name: "Morango",    emoji: "🍓", color: "var(--pastel-pink)" },
+  { id: "laranja",    name: "Laranja",    emoji: "🍊", color: "var(--pastel-orange)" },
+  { id: "maca",       name: "Maçã",       emoji: "🍎", color: "var(--pastel-rose)" },
+  { id: "pera",       name: "Pera",       emoji: "🍐", color: "var(--pastel-lime)" },
+  { id: "uva",        name: "Uva",        emoji: "🍇", color: "var(--pastel-berry)" },
+  { id: "melancia",   name: "Melancia",   emoji: "🍉", color: "var(--pastel-tangerine)" },
+  { id: "abacaxi",    name: "Abacaxi",    emoji: "🍍", color: "var(--pastel-yellow)" },
+  { id: "cereja",     name: "Cereja",     emoji: "🍒", color: "var(--pastel-caramel)" },
+  { id: "pessego",    name: "Pêssego",    emoji: "🍑", color: "var(--pastel-peach)" },
+  { id: "kiwi",       name: "Kiwi",       emoji: "🥝", color: "var(--pastel-mint)" },
+  { id: "coco",       name: "Coco",       emoji: "🥥", color: "var(--pastel-cloud)" },
+  { id: "limao",      name: "Limão",      emoji: "🍋", color: "var(--pastel-lavender)" },
+  { id: "manga",      name: "Manga",      emoji: "🥭", color: "var(--pastel-sky)" },
 ];
 
 export const MICO_ANIMAL: Animal = {
-  id: "mico",
-  name: "Mico",
-  emoji: "🐒",
+  id: "banana",
+  name: "Banana",
+  emoji: "🍌",
   color: "var(--pastel-banana)",
 };
 
