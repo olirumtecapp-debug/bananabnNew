@@ -26,14 +26,18 @@ function PartidaIA() {
   const [numOpponents, setNumOpponents] = useState(1);
   const [state, setState] = useState<GameState | null>(null);
   const [recorded, setRecorded] = useState(false);
+  const [shufflingTargetId, setShufflingTargetId] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shuffleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startGame = useCallback(
     (opponents = numOpponents) => {
       const name = getPrefs().name || "Você";
+      const pool = ["Zé", "Kiko", "Tuti", "Pipo", "Léo", "Bibi", "Bento", "Nina", "Duda", "Tato", "Cacá", "Nino"];
+      const shuffled = pool.slice().sort(() => Math.random() - 0.5);
       const players = [{ id: "human", name, isBot: false }];
       for (let i = 1; i <= opponents; i++) {
-        players.push({ id: `bot${i}`, name: `IA ${i}`, isBot: true });
+        players.push({ id: `bot${i}`, name: shuffled[i - 1] ?? `Amigo ${i}`, isBot: true });
       }
       const g = createGame(players);
       setState(g);
@@ -46,8 +50,25 @@ function PartidaIA() {
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (shuffleTimeoutRef.current) clearTimeout(shuffleTimeoutRef.current);
     };
   }, []);
+
+  // Embaralha visualmente a mão do alvo humano quando ela contém o Mico (Banana)
+  useEffect(() => {
+    if (!state || state.status !== "playing") return;
+    const cur = state.players[state.turnIndex];
+    if (cur.id !== "human") return;
+    const target = state.players[state.targetIndex];
+    const hasMico = target.hand.some((c) => c.isMico);
+    if (!hasMico) return;
+    setShufflingTargetId(target.id);
+    if (shuffleTimeoutRef.current) clearTimeout(shuffleTimeoutRef.current);
+    shuffleTimeoutRef.current = setTimeout(() => setShufflingTargetId(null), 950);
+    return () => {
+      if (shuffleTimeoutRef.current) clearTimeout(shuffleTimeoutRef.current);
+    };
+  }, [state]);
 
   // Turno da IA: agenda automaticamente
   useEffect(() => {
@@ -122,13 +143,14 @@ function PartidaIA() {
                 {isTarget ? (
                   <>
                     <div className="text-[10px] uppercase tracking-widest text-[var(--color-gold)] mb-1">
-                      Toque em uma carta para puxar
+                      {shufflingTargetId === op.id ? "Embaralhando…" : "Toque em uma carta para puxar"}
                     </div>
                     <Hand
                       cards={op.hand}
                       faceDown
                       selectable
                       onPick={onPickCard}
+                      shuffling={shufflingTargetId === op.id}
                     />
                   </>
                 ) : (
