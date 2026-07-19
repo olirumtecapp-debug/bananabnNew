@@ -31,9 +31,11 @@ function PartidaIA() {
   const startGame = useCallback(
     (opponents = numOpponents) => {
       const name = getPrefs().name || "Você";
+      const pool = ["Zé", "Kiko", "Tuti", "Pipo", "Léo", "Bibi", "Bento", "Nina", "Duda", "Tato", "Cacá", "Nino"];
+      const shuffled = pool.slice().sort(() => Math.random() - 0.5);
       const players = [{ id: "human", name, isBot: false }];
       for (let i = 1; i <= opponents; i++) {
-        players.push({ id: `bot${i}`, name: `IA ${i}`, isBot: true });
+        players.push({ id: `bot${i}`, name: shuffled[i - 1] ?? `Amigo ${i}`, isBot: true });
       }
       const g = createGame(players);
       setState(g);
