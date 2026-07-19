@@ -26,7 +26,9 @@ function PartidaIA() {
   const [numOpponents, setNumOpponents] = useState(1);
   const [state, setState] = useState<GameState | null>(null);
   const [recorded, setRecorded] = useState(false);
+  const [shufflingTargetId, setShufflingTargetId] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shuffleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startGame = useCallback(
     (opponents = numOpponents) => {
