@@ -143,13 +143,14 @@ function PartidaIA() {
                 {isTarget ? (
                   <>
                     <div className="text-[10px] uppercase tracking-widest text-[var(--color-gold)] mb-1">
-                      Toque em uma carta para puxar
+                      {shufflingTargetId === op.id ? "Embaralhando…" : "Toque em uma carta para puxar"}
                     </div>
                     <Hand
                       cards={op.hand}
                       faceDown
                       selectable
                       onPick={onPickCard}
+                      shuffling={shufflingTargetId === op.id}
                     />
                   </>
                 ) : (
