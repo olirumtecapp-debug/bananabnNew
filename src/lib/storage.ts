@@ -62,14 +62,17 @@ export function resetStats(): void {
   writeJSON("mico:stats", DEFAULT_STATS);
 }
 
-/** Preferências: tema (dark|light), som ligado, nome do jogador */
+/** Preferências: tema (dark|light), som ligado, nome do jogador, ambiente da mesa */
+export type TableTheme = "classic" | "bordo" | "safari" | "ocean" | "pastel";
+
 export interface Prefs {
   theme: "dark" | "light";
   sound: boolean;
   name: string;
+  table: TableTheme;
 }
 
-export const DEFAULT_PREFS: Prefs = { theme: "dark", sound: true, name: "" };
+export const DEFAULT_PREFS: Prefs = { theme: "dark", sound: true, name: "", table: "classic" };
 
 export function getPrefs(): Prefs {
   return readJSON<Prefs>("mico:prefs", DEFAULT_PREFS);
