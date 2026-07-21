@@ -43,7 +43,7 @@ export function Hand({ cards, faceDown, selectable, onPick, label, highlightedIn
             const gatherX = -offset * 26; // convergem ao centro anulando a sobreposição do leque
 
             const shuffleAnim = {
-              // recolher (0 → 0.28)
+              // recolher → riffle → fan
               x: [0, gatherX, gatherX, riffleX, 0, 0],
               y: [0, -6, -14, -22, -4, 0],
               rotate: [0, -offset * 2, 0, 0, -offset * 1.5, 0],
@@ -51,7 +51,7 @@ export function Hand({ cards, faceDown, selectable, onPick, label, highlightedIn
               scale: [1, 1.02, 1.05, 1.05, 1.02, 1],
               zIndex: isLeft ? [1, 2, 3, 4, 3, 1] : [1, 2, 3, 5, 3, 1],
               opacity: 1,
-            } as const;
+            };
 
             return (
               <motion.div
