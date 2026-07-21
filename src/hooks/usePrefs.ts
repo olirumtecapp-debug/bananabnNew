@@ -15,7 +15,8 @@ export function usePrefs() {
     const root = document.documentElement;
     if (prefs.theme === "light") root.classList.add("light");
     else root.classList.remove("light");
-  }, [prefs.theme]);
+    root.dataset.table = prefs.table ?? "classic";
+  }, [prefs.theme, prefs.table]);
 
   const update = useCallback((patch: Partial<Prefs>) => {
     const next = writePrefs(patch);
