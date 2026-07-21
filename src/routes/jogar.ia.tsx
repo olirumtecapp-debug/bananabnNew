@@ -7,7 +7,7 @@ import { TablePairs } from "@/components/game/TablePairs";
 import { aiPick, createGame, playTurn, type GameState } from "@/game/mico";
 import { getPrefs, recordResult } from "@/lib/storage";
 import { sfx } from "@/lib/sound";
-import { Trophy, Frown, RefreshCw, Users } from "lucide-react";
+import { Trophy, Frown, RefreshCw, Users, Shuffle } from "lucide-react";
 
 export const Route = createFileRoute("/jogar/ia")({
   head: () => ({
@@ -64,7 +64,7 @@ function PartidaIA() {
     if (!hasMico) return;
     setShufflingTargetId(target.id);
     if (shuffleTimeoutRef.current) clearTimeout(shuffleTimeoutRef.current);
-    shuffleTimeoutRef.current = setTimeout(() => setShufflingTargetId(null), 950);
+    shuffleTimeoutRef.current = setTimeout(() => setShufflingTargetId(null), 1650);
     return () => {
       if (shuffleTimeoutRef.current) clearTimeout(shuffleTimeoutRef.current);
     };
@@ -142,8 +142,15 @@ function PartidaIA() {
                 </div>
                 {isTarget ? (
                   <>
-                    <div className="text-[10px] uppercase tracking-widest text-[var(--color-gold)] mb-1">
-                      {shufflingTargetId === op.id ? "Embaralhando…" : "Toque em uma carta para puxar"}
+                    <div className="text-[10px] uppercase tracking-widest text-[var(--color-gold)] mb-1 inline-flex items-center gap-1">
+                      {shufflingTargetId === op.id ? (
+                        <>
+                          <Shuffle className="size-3 animate-spin" />
+                          Embaralhando…
+                        </>
+                      ) : (
+                        "Toque em uma carta para puxar"
+                      )}
                     </div>
                     <Hand
                       cards={op.hand}
