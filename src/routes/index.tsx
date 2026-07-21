@@ -2,7 +2,9 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
+import { ThemeGallery } from "@/components/game/ThemeGallery";
 import { Bot, Users, BookOpen, BarChart3, Sparkles } from "lucide-react";
+
 import { getPlayerId, getPrefs, setPrefs } from "@/lib/storage";
 import { createRoomFn, joinRoomFn } from "@/lib/mico.functions";
 import { toast, Toaster } from "sonner";
@@ -92,9 +94,14 @@ function Home() {
           </p>
         </motion.div>
 
+        <div className="mb-4">
+          <ThemeGallery />
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <Link
             to="/jogar/ia"
+
             className="group rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/30 p-6 hover:gold-glow transition"
           >
             <div className="flex items-center gap-3 mb-2">

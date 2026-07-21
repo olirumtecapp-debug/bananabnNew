@@ -1,23 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Palette, Check } from "lucide-react";
 import { usePrefs } from "@/hooks/usePrefs";
-import type { TableTheme } from "@/lib/storage";
+import { TABLE_THEMES as THEMES } from "@/lib/tables";
 
-interface ThemeSwatch {
-  id: TableTheme;
-  name: string;
-  felt: string;
-  gold: string;
-  paper: string;
-}
-
-const THEMES: ThemeSwatch[] = [
-  { id: "classic", name: "Cassino Clássico", felt: "oklch(0.28 0.06 155)", gold: "oklch(0.82 0.14 82)", paper: "oklch(0.97 0.02 90)" },
-  { id: "bordo",   name: "Royal Bordô",      felt: "oklch(0.32 0.11 18)",  gold: "oklch(0.85 0.11 88)", paper: "oklch(0.97 0.02 85)" },
-  { id: "safari",  name: "Safári Areia",     felt: "oklch(0.44 0.08 65)",  gold: "oklch(0.72 0.16 55)", paper: "oklch(0.96 0.03 80)" },
-  { id: "ocean",   name: "Oceano Noturno",   felt: "oklch(0.32 0.08 220)", gold: "oklch(0.88 0.02 230)", paper: "oklch(0.96 0.02 220)" },
-  { id: "pastel",  name: "Festa Pastel",     felt: "oklch(0.44 0.10 340)", gold: "oklch(0.78 0.16 20)", paper: "oklch(0.98 0.01 340)" },
-];
 
 /** Botão de ambiente com popover para escolher o tema da mesa. */
 export function ThemePicker() {
