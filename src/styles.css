@@ -170,7 +170,10 @@
     color: transparent;
   }
   .card-shadow {
-    box-shadow: 0 6px 20px -6px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.35),
+      0 8px 24px -8px rgba(0, 0, 0, 0.55),
+      0 18px 40px -20px rgba(0, 0, 0, 0.45);
   }
   .gold-glow {
     box-shadow: 0 0 0 2px var(--color-gold), 0 6px 20px -4px oklch(0.82 0.14 82 / 0.55);
@@ -178,4 +181,55 @@
   .pop-glow {
     box-shadow: 0 0 0 3px var(--color-gold), 0 8px 22px -6px oklch(0.82 0.14 82 / 0.55);
   }
+  .pulse-ring {
+    animation: pulse-ring 1.6s ease-out infinite;
+  }
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      oklch(0.95 0.1 90 / 0.22) 50%,
+      transparent 70%
+    );
+    transform: translateX(-100%);
+    animation: shimmer-sweep 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shimmer::after,
+    .pulse-ring {
+      animation: none;
+    }
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow:
+      0 0 0 0 oklch(0.82 0.14 82 / 0.7),
+      0 0 0 2px var(--color-gold);
+  }
+  70% {
+    box-shadow:
+      0 0 0 10px oklch(0.82 0.14 82 / 0),
+      0 0 0 2px var(--color-gold);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 oklch(0.82 0.14 82 / 0),
+      0 0 0 2px var(--color-gold);
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  55% { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
 }
