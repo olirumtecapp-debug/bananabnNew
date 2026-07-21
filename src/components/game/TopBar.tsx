@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { usePrefs } from "@/hooks/usePrefs";
 import { Moon, Sun, Volume2, VolumeX, Home } from "lucide-react";
+import { ThemePicker } from "./ThemePicker";
 
 interface TopBarProps {
   title?: string;
@@ -28,6 +29,7 @@ export function TopBar({ title, showBack }: TopBarProps) {
         {title ?? "Banana"}
       </h1>
       <div className="flex items-center gap-1 shrink-0">
+        <ThemePicker />
         <button
           onClick={() => update({ sound: !prefs.sound })}
           className="rounded-full p-2 bg-[var(--color-felt-deep)]/60 border border-[var(--color-gold)]/30 hover:bg-[var(--color-felt-deep)] transition"
