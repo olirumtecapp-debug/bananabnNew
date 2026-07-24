@@ -317,6 +317,13 @@
     background-size: 10px 10px;
   }
 
+  /* Sobreposição responsiva das cartas na mão: usa vars definidas em Hand.tsx */
+  .hand-item { --hand-overlap: var(--hand-overlap-mobile); }
+  @media (min-width: 640px) {
+    .hand-item { --hand-overlap: var(--hand-overlap-desk); }
+  }
+
+
 
 
   /* Painel HQ: branco, borda preta grossa, sombra chapada offset */
