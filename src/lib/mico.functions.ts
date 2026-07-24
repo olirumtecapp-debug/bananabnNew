@@ -99,15 +99,24 @@ export const joinRoomFn = createServerFn({ method: "POST" })
 
     const existing = state.players.find((p) => p.id === playerId);
     if (existing) {
+      // reconexão: atualiza nome e marca online
       existing.online = true;
       existing.name = data.name;
-    } else {
-      if (state.phase !== "lobby") throw new Error("Partida já iniciada");
+    } else if (state.phase === "lobby") {
       if (state.players.length >= 4) throw new Error("Sala cheia (máx. 4)");
       state.players.push({ id: playerId, name: data.name, online: true });
+    } else {
+      // Partida já iniciada: entra como espectador (não participa desta mão).
+      state.players.push({ id: playerId, name: data.name, online: true });
+      return {
+        code: data.code,
+        playerId,
+        spectator: true as const,
+        message: "Partida em andamento — você entra como espectador até a próxima.",
+      };
     }
     await saveRoom(data.code, state, room.status);
-    return { code: data.code, playerId };
+    return { code: data.code, playerId, spectator: false as const };
   });
 
 /** Host inicia a partida. Distribui as cartas. */

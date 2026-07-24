@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
 import { Hand } from "@/components/game/Hand";
@@ -14,7 +14,7 @@ import {
   startGameFn,
   type RoomStateJSON,
 } from "@/lib/mico.functions";
-import { Copy, RefreshCw, Play } from "lucide-react";
+import { Copy, RefreshCw, Play, LogIn } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export const Route = createFileRoute("/sala/$codigo")({
@@ -36,16 +36,36 @@ function Sala() {
   const [state, setState] = useState<RoomStateJSON | null>(null);
   const [playerId, setPlayerId] = useState<string>("");
   const [recorded, setRecorded] = useState(false);
+  const stateRef = useRef<RoomStateJSON | null>(null);
+  stateRef.current = state;
+
+  // Repoll imediato usado por ações locais para atualizar sem esperar o próximo tick.
+  const refresh = useCallback(async () => {
+    try {
+      const res = await getRoomStateFn({ data: { code: codigo } });
+      if (res) setState(res.state);
+    } catch {
+      /* ignora */
+    }
+  }, [codigo]);
 
   useEffect(() => {
     const pid = getPlayerId();
     setPlayerId(pid);
     const name = getPrefs().name || "Jogador";
-    joinRoomFn({ data: { code: codigo, name, playerId: pid } }).catch((e) => {
-      toast.error(e instanceof Error ? e.message : "Não foi possível entrar na sala.");
-    });
-  }, [codigo]);
+    joinRoomFn({ data: { code: codigo, name, playerId: pid } })
+      .then((res) => {
+        if (res && "spectator" in res && res.spectator) {
+          toast.info(res.message);
+        }
+        refresh();
+      })
+      .catch((e) => {
+        toast.error(e instanceof Error ? e.message : "Não foi possível entrar na sala.");
+      });
+  }, [codigo, refresh]);
 
+  // Polling adaptativo: rápido durante a partida, lento no lobby/fim.
   useEffect(() => {
     let mounted = true;
     let timer: ReturnType<typeof setTimeout> | null = null;
@@ -55,9 +75,13 @@ function Sala() {
         const res = await getRoomStateFn({ data: { code: codigo } });
         if (mounted && res) setState(res.state);
       } catch {
-        // ignora falhas transitórias
+        /* ignora falhas transitórias */
       }
-      if (mounted) timer = setTimeout(tick, 1500);
+      if (mounted) {
+        const phase = stateRef.current?.phase;
+        const delay = phase === "playing" ? 700 : 1500;
+        timer = setTimeout(tick, delay);
+      }
     }
     tick();
 
@@ -69,6 +93,8 @@ function Sala() {
 
   useEffect(() => {
     if (!state?.game || state.game.status !== "finished" || recorded || !playerId) return;
+    const inGame = state.game.players.some((p) => p.id === playerId);
+    if (!inGame) return; // espectador não conta resultado
     const won = state.game.loserId !== playerId;
     recordResult(won);
     if (won) sfx.win();
@@ -98,15 +124,75 @@ function Sala() {
   }
 
   const isHost = state.hostId === playerId;
+  const isInRoom = state.players.some((p) => p.id === playerId);
   return (
     <div className="min-h-screen felt-bg flex flex-col">
       <Toaster position="top-center" />
       <TopBar title={`SALA ${codigo}`} showBack />
+      {!isInRoom && <JoinCta code={codigo} onJoined={refresh} />}
       {state.phase === "lobby" ? (
-        <Lobby state={state} code={codigo} isHost={isHost} playerId={playerId} />
+        <Lobby state={state} code={codigo} isHost={isHost} playerId={playerId} onChanged={refresh} />
       ) : (
-        <Playing state={state} code={codigo} playerId={playerId} isHost={isHost} onReset={() => setRecorded(false)} />
+        <Playing
+          state={state}
+          code={codigo}
+          playerId={playerId}
+          isHost={isHost}
+          onReset={() => setRecorded(false)}
+          refresh={refresh}
+        />
       )}
+      <DiagnosticStrip state={state} playerId={playerId} />
+    </div>
+  );
+}
+
+function JoinCta({ code, onJoined }: { code: string; onJoined: () => void }) {
+  const [joining, setJoining] = useState(false);
+  async function handleJoin() {
+    setJoining(true);
+    try {
+      const pid = getPlayerId();
+      const name = getPrefs().name || "Jogador";
+      await joinRoomFn({ data: { code, name, playerId: pid } });
+      onJoined();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erro ao entrar.");
+    } finally {
+      setJoining(false);
+    }
+  }
+  return (
+    <div className="max-w-md mx-auto w-full px-4 pt-4">
+      <div className="hq-panel p-3 flex items-center justify-between gap-3">
+        <span style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}>
+          Você ainda não entrou nesta sala.
+        </span>
+        <button
+          onClick={handleJoin}
+          disabled={joining}
+          className="hq-btn hq-btn-primary text-white px-3 py-1.5 text-sm inline-flex items-center gap-1 disabled:opacity-50"
+        >
+          <LogIn className="size-4" /> ENTRAR
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DiagnosticStrip({ state, playerId }: { state: RoomStateJSON; playerId: string }) {
+  const meShort = playerId ? playerId.slice(0, 6) : "—";
+  const cur =
+    state.game && state.game.status === "playing"
+      ? state.game.players[state.game.turnIndex]
+      : null;
+  const curShort = cur ? `${cur.name} (${cur.id.slice(0, 6)})` : "—";
+  return (
+    <div
+      className="max-w-6xl w-full mx-auto px-3 pb-3 mt-auto text-[10px] text-center opacity-70"
+      style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif" }}
+    >
+      Meu ID: <strong>{meShort}</strong> · Vez de: <strong>{curShort}</strong>
     </div>
   );
 }
@@ -116,17 +202,24 @@ function Lobby({
   code,
   isHost,
   playerId,
+  onChanged,
 }: {
   state: RoomStateJSON;
   code: string;
   isHost: boolean;
   playerId: string;
+  onChanged: () => void;
 }) {
+  const [pending, setPending] = useState(false);
   async function handleStart() {
+    setPending(true);
     try {
       await startGameFn({ data: { code, playerId } });
+      await onChanged();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erro ao iniciar.");
+    } finally {
+      setPending(false);
     }
   }
   function copyCode() {
@@ -155,6 +248,12 @@ function Lobby({
           style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
         >
           Compartilhe este link: {shareUrl}
+        </p>
+        <p
+          className="mt-1 text-[11px] opacity-80"
+          style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+        >
+          Aguarde todos aparecerem antes de iniciar.
         </p>
       </div>
 
@@ -188,9 +287,7 @@ function Lobby({
                     HOST
                   </span>
                 )}
-                {p.id === playerId && (
-                  <span className="ml-2 opacity-60">(você)</span>
-                )}
+                {p.id === playerId && <span className="ml-2 opacity-60">(você)</span>}
               </span>
             </li>
           ))}
@@ -200,11 +297,11 @@ function Lobby({
       {isHost ? (
         <button
           onClick={handleStart}
-          disabled={state.players.length < 2}
+          disabled={state.players.length < 2 || pending}
           className="mt-6 w-full hq-btn hq-btn-primary text-white py-3 text-lg disabled:opacity-50 inline-flex items-center justify-center gap-2"
         >
           <Play className="size-5" />
-          {state.players.length < 2 ? "AGUARDANDO…" : "INICIAR!"}
+          {pending ? "INICIANDO…" : state.players.length < 2 ? "AGUARDANDO…" : "INICIAR!"}
         </button>
       ) : (
         <p
@@ -224,12 +321,14 @@ function Playing({
   playerId,
   isHost,
   onReset,
+  refresh,
 }: {
   state: RoomStateJSON;
   code: string;
   playerId: string;
   isHost: boolean;
   onReset: () => void;
+  refresh: () => Promise<void>;
 }) {
   const game = state.game!;
   const me = game.players.find((p) => p.id === playerId);
@@ -239,22 +338,37 @@ function Playing({
   const target = game.players[game.targetIndex];
   const iAmTargeted = target.id === playerId;
   const currentPlayer = game.players[game.turnIndex];
+  const [pending, setPending] = useState(false);
 
   async function onPickCard(idx: number) {
-    if (!isMyTurn) return;
+    if (!isMyTurn || pending) return;
+    setPending(true);
     try {
       await playCardFn({ data: { code, playerId, cardIndex: idx } });
+      await refresh();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Jogada inválida.");
+      const msg = e instanceof Error ? e.message : "Jogada inválida.";
+      if (/não é sua vez/i.test(msg)) {
+        toast("Outro jogador já jogou, aguarde…", { duration: 1500 });
+        await refresh();
+      } else {
+        toast.error(msg);
+      }
+    } finally {
+      setPending(false);
     }
   }
 
   async function handleReset() {
+    setPending(true);
     try {
       await resetGameFn({ data: { code, playerId } });
       onReset();
+      await refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erro ao reiniciar.");
+    } finally {
+      setPending(false);
     }
   }
 
@@ -264,7 +378,9 @@ function Playing({
         ? `Sua vez — puxe uma carta de ${target.name}!`
         : iAmTargeted
           ? `${currentPlayer.name} está puxando uma carta sua…`
-          : `${currentPlayer.name} está jogando…`
+          : me
+            ? `${currentPlayer.name} está jogando…`
+            : `Você está assistindo — ${currentPlayer.name} está jogando.`
       : null;
 
   return (
@@ -278,9 +394,9 @@ function Playing({
               className={`hq-panel-sm p-3 transition ${isTargetForMe ? "gold-glow" : ""}`}
               style={isTargetForMe ? { background: "var(--hq-primary)" } : undefined}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
                 <span
-                  className="truncate text-sm"
+                  className="truncate text-sm min-w-0"
                   style={{ fontFamily: "var(--font-display)", color: "var(--ink)", letterSpacing: "0.04em" }}
                 >
                   {op.name}
@@ -301,7 +417,7 @@ function Playing({
                   )}
                 </span>
                 <span
-                  className="text-xs"
+                  className="text-xs shrink-0"
                   style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
                 >
                   {op.hand.length} {op.hand.length === 1 ? "carta" : "cartas"}
@@ -322,7 +438,7 @@ function Playing({
                   >
                     PICK!
                   </div>
-                  <Hand cards={op.hand} faceDown selectable onPick={onPickCard} />
+                  <Hand cards={op.hand} faceDown selectable={!pending} onPick={onPickCard} />
                 </>
               ) : (
                 <Hand cards={op.hand} faceDown />
@@ -356,9 +472,9 @@ function Playing({
 
       {me && (
         <section className="hq-panel p-3 sm:p-4">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
             <span
-              className="text-lg"
+              className="text-lg truncate min-w-0"
               style={{ fontFamily: "var(--font-display)", color: "var(--ink)", letterSpacing: "0.04em" }}
             >
               {me.name}{" "}
@@ -367,7 +483,7 @@ function Playing({
               </span>
             </span>
             <span
-              className="text-xs"
+              className="text-xs shrink-0"
               style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
             >
               {me.hand.length} {me.hand.length === 1 ? "carta" : "cartas"}
@@ -419,7 +535,8 @@ function Playing({
                 {isHost && (
                   <button
                     onClick={handleReset}
-                    className="hq-btn hq-btn-primary text-white px-5 py-2 inline-flex items-center gap-2"
+                    disabled={pending}
+                    className="hq-btn hq-btn-primary text-white px-5 py-2 inline-flex items-center gap-2 disabled:opacity-50"
                   >
                     <RefreshCw className="size-4" />
                     NOVA PARTIDA
