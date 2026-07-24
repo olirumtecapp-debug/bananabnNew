@@ -264,6 +264,21 @@
 
 
 @layer utilities {
+  /* Cenário HQ fixo atrás de tudo — imagem do tema atual + vinheta suave. */
+  .scene-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background-color: var(--hq-bg-a);
+    background-image:
+      radial-gradient(ellipse at center, transparent 30%, color-mix(in oklab, var(--hq-bg-a) 55%, black) 100%),
+      var(--scene, none);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+  }
+
   /* Faixa decorativa HQ (diagonais amarelo/preto) */
   .hq-stripe {
     background-image: repeating-linear-gradient(
@@ -288,18 +303,20 @@
     padding: 18px;
   }
 
-  /* Feltro da mesa — cor sólida do tema (--felt) com trama Ben-Day sutil */
+  /* Feltro translúcido — deixa o cenário HQ aparecer nas margens */
   .felt-bg {
-    background-color: var(--felt);
+    background-color: color-mix(in oklab, var(--felt) 86%, transparent);
     background-image:
       radial-gradient(circle, color-mix(in oklab, var(--ink) 18%, transparent) 1.2px, transparent 1.8px);
     background-size: 12px 12px;
+    backdrop-filter: blur(2px);
   }
   .halftone-bg {
     background-image:
       radial-gradient(circle, color-mix(in oklab, var(--ink) 55%, transparent) 1.5px, transparent 2px);
     background-size: 10px 10px;
   }
+
 
 
   /* Painel HQ: branco, borda preta grossa, sombra chapada offset */
