@@ -20,7 +20,10 @@ export function TopBar({ title, showBack }: TopBarProps) {
     boxShadow: "3px 3px 0 var(--ink)",
   } as const;
   return (
+    <>
+    <div className="hq-stripe" aria-hidden />
     <header className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:px-6 py-3">
+
       {showBack ? (
         <Link to="/" className={`${btn} gap-1 px-3`} style={btnStyle} aria-label="Voltar ao menu">
           <Home className="size-4" />
@@ -59,5 +62,6 @@ export function TopBar({ title, showBack }: TopBarProps) {
         </button>
       </div>
     </header>
+    </>
   );
 }
