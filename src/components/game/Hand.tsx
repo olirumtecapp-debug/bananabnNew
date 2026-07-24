@@ -13,14 +13,16 @@ interface HandProps {
 }
 
 /**
- * Leque de cartas com sobreposição. Quando `shuffling` está ativo,
- * as cartas passam por três atos:
- *   1) Recolher — convergem para o centro e viram de dorso.
- *   2) Riffle — split em duas metades que se cruzam com rotação 3D.
- *   3) Fan — reabrem no leque original.
+ * Leque de cartas com sobreposição dinâmica: quanto mais cartas, mais
+ * elas se sobrepõem — o leque encolhe em vez de vazar. Nunca envolve.
+ * Quando `shuffling` está ativo, executa: recolher → riffle → fan.
  */
 export function Hand({ cards, faceDown, selectable, onPick, label, highlightedIndex, shuffling }: HandProps) {
   const n = cards.length;
+  // Sobreposição escala com a quantidade: mãos grandes encolhem para caber.
+  // Valores negativos (margem esquerda) — mais negativo = mais sobreposição.
+  const overlapMobile = Math.min(-16, -16 - Math.max(0, n - 6) * 4); // até ~-44px
+  const overlapDesk = Math.min(-24, -24 - Math.max(0, n - 8) * 4); // até ~-56px
 
   return (
     <div className="flex flex-col items-center gap-2 min-w-0 w-full">
@@ -30,20 +32,26 @@ export function Hand({ cards, faceDown, selectable, onPick, label, highlightedIn
         </div>
       )}
       <div
-        className="flex justify-center -space-x-6 sm:-space-x-8 flex-wrap gap-y-2"
-        style={{ perspective: 900 }}
+        className="hand-wrap flex justify-center items-end w-full max-w-full overflow-x-auto overflow-y-visible px-2 py-3"
+        style={
+          {
+            perspective: 900,
+            // CSS var lida pelos filhos para ajustar `marginLeft` negativo
+            ["--hand-overlap-mobile" as string]: `${overlapMobile}px`,
+            ["--hand-overlap-desk" as string]: `${overlapDesk}px`,
+            scrollbarWidth: "thin",
+          } as React.CSSProperties
+        }
       >
         <AnimatePresence initial={false}>
           {cards.map((card, i) => {
             const half = n > 0 ? (n - 1) / 2 : 0;
-            const offset = i - half; // negativo = esquerda, positivo = direita
+            const offset = i - half;
             const isLeft = offset <= 0;
-            // deslocamento base para o riffle (metade esquerda vs direita)
             const riffleX = (isLeft ? -1 : 1) * (30 + Math.abs(offset) * 6);
-            const gatherX = -offset * 26; // convergem ao centro anulando a sobreposição do leque
+            const gatherX = -offset * 26;
 
             const shuffleAnim = {
-              // recolher → riffle → fan
               x: [0, gatherX, gatherX, riffleX, 0, 0],
               y: [0, -6, -14, -22, -4, 0],
               rotate: [0, -offset * 2, 0, 0, -offset * 1.5, 0],
@@ -72,8 +80,13 @@ export function Hand({ cards, faceDown, selectable, onPick, label, highlightedIn
                       }
                     : { delay: i * 0.03, type: "spring", stiffness: 260, damping: 22 }
                 }
-                style={{ transformStyle: "preserve-3d" }}
-                className="relative"
+                style={{
+                  transformStyle: "preserve-3d",
+                  // Primeira carta sem sobreposição; demais recebem a margem negativa.
+                  marginLeft: i === 0 ? 0 : "var(--hand-overlap, var(--hand-overlap-mobile))",
+                  zIndex: i,
+                }}
+                className="hand-item relative shrink-0"
               >
                 <Card
                   card={faceDown ? undefined : card}
