@@ -6,20 +6,21 @@ import type { TableTheme } from "@/lib/storage";
 interface ThemeSwatch {
   id: TableTheme;
   name: string;
-  felt: string;
-  gold: string;
-  paper: string;
+  bg: string;
+  dot: string;
+  accent: string;
 }
 
+/** Presets HQ — cores refletem as variáveis --hq-* de cada tema. */
 const THEMES: ThemeSwatch[] = [
-  { id: "classic", name: "Cassino Clássico", felt: "oklch(0.28 0.06 155)", gold: "oklch(0.82 0.14 82)", paper: "oklch(0.97 0.02 90)" },
-  { id: "bordo",   name: "Royal Bordô",      felt: "oklch(0.32 0.11 18)",  gold: "oklch(0.85 0.11 88)", paper: "oklch(0.97 0.02 85)" },
-  { id: "safari",  name: "Safári Areia",     felt: "oklch(0.44 0.08 65)",  gold: "oklch(0.72 0.16 55)", paper: "oklch(0.96 0.03 80)" },
-  { id: "ocean",   name: "Oceano Noturno",   felt: "oklch(0.32 0.08 220)", gold: "oklch(0.88 0.02 230)", paper: "oklch(0.96 0.02 220)" },
-  { id: "pastel",  name: "Festa Pastel",     felt: "oklch(0.44 0.10 340)", gold: "oklch(0.78 0.16 20)", paper: "oklch(0.98 0.01 340)" },
+  { id: "classic", name: "Amarelo POW!",   bg: "#fff2b3", dot: "#f7c53a", accent: "#e63946" },
+  { id: "bordo",   name: "Vermelho ZAP!",  bg: "#ffd1d1", dot: "#e63946", accent: "#f7c53a" },
+  { id: "safari",  name: "Areia BOOM!",    bg: "#ffe0b3", dot: "#e07a2b", accent: "#ffb347" },
+  { id: "ocean",   name: "Azul WHAM!",     bg: "#bfe4ff", dot: "#1d6fb8", accent: "#ffd83a" },
+  { id: "pastel",  name: "Rosa KAPOW!",    bg: "#ffd6ec", dot: "#ff4fa3", accent: "#a06bff" },
 ];
 
-/** Botão de ambiente com popover para escolher o tema da mesa. */
+/** Seletor de ambiente estilo HQ. */
 export function ThemePicker() {
   const { prefs, update } = usePrefs();
   const [open, setOpen] = useState(false);
@@ -38,16 +39,25 @@ export function ThemePicker() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="rounded-full p-2 bg-[var(--color-felt-deep)]/60 border border-[var(--color-gold)]/30 hover:bg-[var(--color-felt-deep)] transition"
+        className="rounded-lg p-2 inline-flex items-center justify-center"
+        style={{
+          background: "var(--hq-panel)",
+          color: "var(--ink)",
+          border: "2.5px solid var(--ink)",
+          boxShadow: "3px 3px 0 var(--ink)",
+        }}
         aria-label="Escolher ambiente"
         title="Ambiente da mesa"
       >
         <Palette className="size-4" />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-2 z-50 w-64 rounded-2xl border border-[var(--color-gold)]/40 bg-[var(--color-popover)] shadow-2xl p-2">
-          <div className="px-2 py-1 text-[10px] uppercase tracking-widest text-[var(--color-muted-foreground)]">
-            Ambiente da mesa
+        <div className="absolute right-0 top-full mt-2 z-50 w-64 hq-panel p-2">
+          <div
+            className="px-2 py-1 text-[11px]"
+            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.06em", color: "var(--ink)" }}
+          >
+            AMBIENTE
           </div>
           <ul className="space-y-1">
             {THEMES.map((t) => {
@@ -59,30 +69,34 @@ export function ThemePicker() {
                       update({ table: t.id });
                       setOpen(false);
                     }}
-                    className={`w-full flex items-center gap-2 rounded-lg px-2 py-2 text-left text-sm hover:bg-[var(--color-felt-deep)]/60 transition ${
-                      active ? "bg-[var(--color-felt-deep)]/70" : ""
-                    }`}
+                    className="w-full flex items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition"
+                    style={{
+                      background: active ? "var(--hq-primary)" : "transparent",
+                      color: "var(--ink)",
+                      border: active ? "2px solid var(--ink)" : "2px solid transparent",
+                      fontFamily: "Comic Neue, sans-serif",
+                      fontWeight: 700,
+                    }}
                   >
                     <span
-                      className="relative shrink-0 rounded-md overflow-hidden border border-[var(--color-gold)]/40"
-                      style={{ width: 40, height: 26, background: t.felt }}
+                      className="relative shrink-0 rounded-md overflow-hidden"
+                      style={{
+                        width: 44,
+                        height: 28,
+                        background: t.bg,
+                        backgroundImage: `radial-gradient(circle, ${t.dot} 1.2px, transparent 1.8px)`,
+                        backgroundSize: "6px 6px",
+                        border: "2px solid var(--ink)",
+                      }}
                       aria-hidden
                     >
                       <span
-                        className="absolute left-1 top-1 rounded-sm"
-                        style={{ width: 10, height: 14, background: t.paper, boxShadow: "0 1px 2px rgba(0,0,0,0.3)" }}
-                      />
-                      <span
                         className="absolute right-1 top-1 rounded-sm"
-                        style={{ width: 10, height: 14, background: t.paper, boxShadow: "0 1px 2px rgba(0,0,0,0.3)" }}
-                      />
-                      <span
-                        className="absolute inset-x-1 bottom-1 h-[3px] rounded-full"
-                        style={{ background: t.gold }}
+                        style={{ width: 10, height: 12, background: t.accent, border: "1.5px solid var(--ink)" }}
                       />
                     </span>
                     <span className="flex-1 truncate">{t.name}</span>
-                    {active && <Check className="size-4 text-[var(--color-gold)]" />}
+                    {active && <Check className="size-4" style={{ color: "var(--ink)" }} />}
                   </button>
                 </li>
               );

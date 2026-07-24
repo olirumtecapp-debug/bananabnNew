@@ -7,7 +7,7 @@ import { TablePairs } from "@/components/game/TablePairs";
 import { aiPick, createGame, playTurn, type GameState } from "@/game/mico";
 import { getPrefs, recordResult } from "@/lib/storage";
 import { sfx } from "@/lib/sound";
-import { Trophy, Frown, RefreshCw, Users, Shuffle } from "lucide-react";
+import { RefreshCw, Users, Shuffle } from "lucide-react";
 
 export const Route = createFileRoute("/jogar/ia")({
   head: () => ({
@@ -54,7 +54,6 @@ function PartidaIA() {
     };
   }, []);
 
-  // Embaralha visualmente a mão do alvo humano quando ela contém o Mico (Banana)
   useEffect(() => {
     if (!state || state.status !== "playing") return;
     const cur = state.players[state.turnIndex];
@@ -70,7 +69,6 @@ function PartidaIA() {
     };
   }, [state]);
 
-  // Turno da IA: agenda automaticamente
   useEffect(() => {
     if (!state || state.status !== "playing") return;
     const cur = state.players[state.turnIndex];
@@ -87,7 +85,6 @@ function PartidaIA() {
     };
   }, [state]);
 
-  // Ao terminar, salvar estatística
   useEffect(() => {
     if (!state || state.status !== "finished" || recorded) return;
     const won = state.loserId !== "human";
@@ -116,40 +113,52 @@ function PartidaIA() {
 
   return (
     <div className="min-h-screen felt-bg flex flex-col">
-      <TopBar title="Vs IA" showBack />
+      <TopBar title="VS IA" showBack />
       <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-4 pb-6 flex flex-col gap-4">
-        {/* Adversários */}
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {opponents.map((op) => {
             const isTarget = isHumanTurn && op.id === target.id;
             return (
               <div
                 key={op.id}
-                className={`rounded-xl p-3 border transition ${
-                  isTarget
-                    ? "border-[var(--color-gold)] gold-glow bg-[var(--color-felt-deep)]/80"
-                    : "border-[var(--color-gold)]/20 bg-[var(--color-felt-deep)]/50"
-                }`}
+                className={`hq-panel-sm p-3 transition ${isTarget ? "gold-glow" : ""}`}
+                style={isTarget ? { background: "var(--hq-primary)" } : undefined}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-sm truncate">
+                  <span
+                    className="truncate text-sm"
+                    style={{ fontFamily: "var(--font-display)", color: "var(--ink)", letterSpacing: "0.04em" }}
+                  >
                     {op.name}
                     {op.finished && " 👑"}
                   </span>
-                  <span className="text-xs text-[var(--color-muted-foreground)]">
+                  <span
+                    className="text-xs"
+                    style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+                  >
                     {op.hand.length} {op.hand.length === 1 ? "carta" : "cartas"}
                   </span>
                 </div>
                 {isTarget ? (
                   <>
-                    <div className="text-[10px] uppercase tracking-widest text-[var(--color-gold)] mb-1 inline-flex items-center gap-1">
+                    <div
+                      className="mb-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px]"
+                      style={{
+                        background: "var(--hq-secondary)",
+                        color: "#fff",
+                        border: "2px solid var(--ink)",
+                        boxShadow: "2px 2px 0 var(--ink)",
+                        fontFamily: "var(--font-display)",
+                        letterSpacing: "0.06em",
+                      }}
+                    >
                       {shufflingTargetId === op.id ? (
                         <>
                           <Shuffle className="size-3 animate-spin" />
-                          Embaralhando…
+                          SHUFFLE!
                         </>
                       ) : (
-                        "Toque em uma carta para puxar"
+                        "PICK!"
                       )}
                     </div>
                     <Hand
@@ -168,22 +177,34 @@ function PartidaIA() {
           })}
         </section>
 
-        {/* Mesa: pares de todos */}
         <section>
-          <h2 className="text-xs uppercase tracking-widest text-[var(--color-muted-foreground)] mb-2 text-center">
-            Mesa · pares descartados
+          <h2
+            className="text-xs mb-2 text-center"
+            style={{
+              fontFamily: "var(--font-display)",
+              letterSpacing: "0.08em",
+              color: "var(--ink)",
+            }}
+          >
+            MESA · PARES DESCARTADOS
           </h2>
           <TablePairs players={state.players} />
         </section>
 
-        {/* Aviso do turno */}
         <TurnBanner state={state} />
 
-        {/* Mão do jogador */}
-        <section className="rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/25 p-3 sm:p-4">
+        <section className="hq-panel p-3 sm:p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="font-semibold">{human.name}</span>
-            <span className="text-xs text-[var(--color-muted-foreground)]">
+            <span
+              style={{ fontFamily: "var(--font-display)", color: "var(--ink)", letterSpacing: "0.04em" }}
+              className="text-lg"
+            >
+              {human.name}
+            </span>
+            <span
+              className="text-xs"
+              style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+            >
               {human.hand.length} {human.hand.length === 1 ? "carta" : "cartas"}
             </span>
           </div>
@@ -202,16 +223,19 @@ function TurnBanner({ state }: { state: GameState }) {
   if (state.status !== "playing") return null;
   const cur = state.players[state.turnIndex];
   const isHuman = cur.id === "human";
+  const message = isHuman
+    ? `Sua vez — puxe uma carta de ${state.players[state.targetIndex].name}!`
+    : `${cur.name} está jogando…`;
   return (
     <motion.div
       key={cur.id + state.players[state.targetIndex].id}
-      initial={{ opacity: 0, y: -6 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-center text-sm text-[var(--color-gold)] font-semibold"
+      initial={{ opacity: 0, y: -6, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      className="flex justify-center"
     >
-      {isHuman
-        ? `Sua vez — puxe uma carta de ${state.players[state.targetIndex].name}`
-        : `${cur.name} está jogando…`}
+      <div className="speech-bubble text-sm sm:text-base max-w-md text-center">
+        {message}
+      </div>
     </motion.div>
   );
 }
@@ -226,39 +250,37 @@ function EndModal({ state, onRestart }: { state: GameState; onRestart: () => voi
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
     >
       <motion.div
-        initial={{ scale: 0.85, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        className="max-w-md w-full rounded-2xl bg-[var(--color-felt-deep)] border border-[var(--color-gold)]/50 p-6 text-center"
+        initial={{ scale: 0.5, rotate: -8, y: 20 }}
+        animate={{ scale: 1, rotate: 0, y: 0 }}
+        transition={{ type: "spring", stiffness: 220, damping: 15 }}
+        className="hq-panel max-w-md w-full p-6 text-center relative"
       >
-        <div className="text-6xl mb-2">{won ? "🏆" : "🍌"}</div>
-        <h2 className="font-display text-3xl gold-text mb-1">
-          {won ? "Você venceu!" : "Você pegou a Banana!"}
+        <div
+          className="text-7xl mb-2 inline-block"
+          style={{ filter: "drop-shadow(4px 4px 0 var(--ink))" }}
+        >
+          {won ? "🏆" : "🍌"}
+        </div>
+        <h2 className="hq-title text-4xl mb-2">
+          {won ? "VOCÊ VENCEU!" : "OH NO!"}
         </h2>
-        <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
-          {won ? (
-            <>
-              <Trophy className="inline size-4 mr-1" />
-              Terminou sem a Banana. Boa jogada!
-            </>
-          ) : (
-            <>
-              <Frown className="inline size-4 mr-1" />
-              Ficou com a carta sem par. Tente de novo!
-            </>
-          )}
+        <p
+          className="mb-4 text-sm"
+          style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+        >
+          {won
+            ? "Terminou sem a Banana. Boa jogada!"
+            : "Ficou com a Banana. Tente de novo!"}
         </p>
-        <div className="flex flex-wrap gap-2 justify-center">
+        <div className="flex flex-wrap gap-3 justify-center">
           <button
             onClick={onRestart}
-            className="rounded-full bg-[var(--color-gold)] text-[var(--color-primary-foreground)] font-bold px-5 py-2 inline-flex items-center gap-2"
+            className="hq-btn hq-btn-primary text-white px-5 py-2 inline-flex items-center gap-2"
           >
-            <RefreshCw className="size-4" /> Nova partida
+            <RefreshCw className="size-4" /> NOVA PARTIDA
           </button>
-          <Link
-            to="/"
-            className="rounded-full border border-[var(--color-gold)]/50 px-5 py-2 font-medium"
-          >
-            Menu
+          <Link to="/" className="hq-btn px-5 py-2 inline-flex items-center">
+            MENU
           </Link>
         </div>
       </motion.div>
@@ -278,34 +300,40 @@ function StartScreen({
   const options = useMemo(() => [1, 2, 3], []);
   return (
     <div className="min-h-screen felt-bg">
-      <TopBar title="Vs IA" showBack />
+      <TopBar title="VS IA" showBack />
       <main className="max-w-md mx-auto px-4 py-10 text-center">
-        <div className="text-6xl mb-2">🍌</div>
-        <h1 className="font-display text-3xl gold-text mb-2">Partida contra a IA</h1>
-        <p className="text-sm text-[var(--color-muted-foreground)] mb-6">
-          Escolha quantos oponentes você quer enfrentar.
+        <div
+          className="text-6xl mb-2 inline-block"
+          style={{ filter: "drop-shadow(3px 3px 0 var(--ink))" }}
+        >
+          🍌
+        </div>
+        <h1 className="hq-title text-4xl mb-2">VS IA</h1>
+        <p
+          className="mb-6"
+          style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+        >
+          Escolha quantos oponentes você quer enfrentar!
         </p>
-        <div className="flex justify-center gap-2 mb-6">
+        <div className="flex justify-center gap-3 mb-8">
           {options.map((n) => (
             <button
               key={n}
               onClick={() => setNumOpponents(n)}
-              className={`rounded-full px-5 py-2 border transition inline-flex items-center gap-2 ${
+              className="hq-btn px-5 py-2 inline-flex items-center gap-2"
+              style={
                 numOpponents === n
-                  ? "border-[var(--color-gold)] bg-[var(--color-gold)]/20 gold-text font-bold"
-                  : "border-[var(--color-gold)]/30 hover:border-[var(--color-gold)]/60"
-              }`}
+                  ? { background: "var(--hq-secondary)", color: "#fff" }
+                  : undefined
+              }
             >
               <Users className="size-4" />
               {n}
             </button>
           ))}
         </div>
-        <button
-          onClick={onStart}
-          className="rounded-full bg-[var(--color-gold)] text-[var(--color-primary-foreground)] font-bold px-6 py-3 hover:brightness-110 transition"
-        >
-          Começar partida
+        <button onClick={onStart} className="hq-btn hq-btn-primary text-white px-6 py-3 text-lg">
+          COMEÇAR!
         </button>
       </main>
     </div>

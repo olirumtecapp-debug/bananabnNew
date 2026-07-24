@@ -8,31 +8,41 @@ interface TopBarProps {
   showBack?: boolean;
 }
 
-/** Barra superior com toggle de tema, som e botão home. */
+/** Barra superior estilo HQ com botões quadrados de borda preta. */
 export function TopBar({ title, showBack }: TopBarProps) {
   const { prefs, update } = usePrefs();
+  const btn =
+    "rounded-lg p-2 transition inline-flex items-center justify-center";
+  const btnStyle = {
+    background: "var(--hq-panel)",
+    color: "var(--ink)",
+    border: "2.5px solid var(--ink)",
+    boxShadow: "3px 3px 0 var(--ink)",
+  } as const;
   return (
     <header className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:px-6 py-3">
       {showBack ? (
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1 rounded-full bg-[var(--color-felt-deep)]/60 border border-[var(--color-gold)]/30 px-3 py-1.5 text-sm hover:bg-[var(--color-felt-deep)] transition"
-          aria-label="Voltar ao menu"
-        >
+        <Link to="/" className={`${btn} gap-1 px-3`} style={btnStyle} aria-label="Voltar ao menu">
           <Home className="size-4" />
-          <span className="hidden sm:inline">Menu</span>
+          <span
+            className="hidden sm:inline text-sm"
+            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}
+          >
+            MENU
+          </span>
         </Link>
       ) : (
         <span />
       )}
-      <h1 className="truncate text-center font-display text-lg sm:text-xl gold-text">
-        {title ?? "Banana"}
+      <h1 className="truncate text-center hq-title text-2xl sm:text-3xl">
+        {title ?? "BANANA!"}
       </h1>
-      <div className="flex items-center gap-1 shrink-0">
+      <div className="flex items-center gap-2 shrink-0">
         <ThemePicker />
         <button
           onClick={() => update({ sound: !prefs.sound })}
-          className="rounded-full p-2 bg-[var(--color-felt-deep)]/60 border border-[var(--color-gold)]/30 hover:bg-[var(--color-felt-deep)] transition"
+          className={btn}
+          style={btnStyle}
           aria-label={prefs.sound ? "Silenciar" : "Ativar som"}
           title={prefs.sound ? "Som ligado" : "Som desligado"}
         >
@@ -40,7 +50,8 @@ export function TopBar({ title, showBack }: TopBarProps) {
         </button>
         <button
           onClick={() => update({ theme: prefs.theme === "dark" ? "light" : "dark" })}
-          className="rounded-full p-2 bg-[var(--color-felt-deep)]/60 border border-[var(--color-gold)]/30 hover:bg-[var(--color-felt-deep)] transition"
+          className={btn}
+          style={btnStyle}
           aria-label="Alternar tema"
           title="Alternar tema"
         >
