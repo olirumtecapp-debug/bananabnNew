@@ -73,6 +73,15 @@ function Home() {
     }
   }
 
+  const inputStyle = {
+    background: "var(--hq-panel)",
+    color: "var(--ink)",
+    border: "2.5px solid var(--ink)",
+    boxShadow: "3px 3px 0 var(--ink)",
+    fontFamily: "Comic Neue, sans-serif",
+    fontWeight: 700,
+  } as const;
+
   return (
     <div className="min-h-screen felt-bg">
       <Toaster position="top-center" />
@@ -82,57 +91,88 @@ function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 18 }}
-          className="text-center py-8 sm:py-14"
+          className="text-center py-8 sm:py-12 relative"
         >
-          <div className="text-6xl sm:text-8xl mb-2">🍌</div>
-          <h1 className="font-display text-5xl sm:text-7xl font-black gold-text">Banana</h1>
-          <p className="mt-3 text-[var(--color-muted-foreground)] text-sm sm:text-base max-w-xl mx-auto">
-            O clássico jogo de cartas em português. Jogue contra a IA ou crie uma sala e chame os
-            amigos.
+          <motion.div
+            animate={{ rotate: [-3, 3, -3] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className="text-7xl sm:text-8xl mb-2 inline-block"
+            style={{ filter: "drop-shadow(4px 4px 0 var(--ink))" }}
+          >
+            🍌
+          </motion.div>
+          <h1 className="hq-title text-6xl sm:text-8xl">BANANA!</h1>
+          <div className="mt-4 inline-block burst text-base sm:text-lg">
+            OLD MAID!
+          </div>
+          <p
+            className="mt-5 text-sm sm:text-base max-w-xl mx-auto"
+            style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+          >
+            O clássico jogo de cartas em português. Enfrente a IA ou chame os amigos por sala online!
           </p>
         </motion.div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Link
-            to="/jogar/ia"
-            className="group rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/30 p-6 hover:gold-glow transition"
-          >
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Link to="/jogar/ia" className="hq-panel p-5 group block hover:-translate-y-1 transition-transform">
             <div className="flex items-center gap-3 mb-2">
-              <div className="rounded-full bg-[var(--color-gold)]/20 p-3 group-hover:bg-[var(--color-gold)]/40 transition">
-                <Bot className="size-6 text-[var(--color-gold)]" />
+              <div
+                className="rounded-lg p-3"
+                style={{
+                  background: "var(--hq-secondary)",
+                  border: "2.5px solid var(--ink)",
+                  boxShadow: "3px 3px 0 var(--ink)",
+                }}
+              >
+                <Bot className="size-6 text-white" />
               </div>
-              <h2 className="text-xl font-bold">Jogar vs IA</h2>
+              <h2 className="hq-title-sm text-2xl">JOGAR vs IA</h2>
             </div>
-            <p className="text-sm text-[var(--color-muted-foreground)]">
-              Partida rápida contra 1 a 3 oponentes controlados pela IA. Ideal para praticar.
+            <p style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}>
+              Partida rápida contra 1 a 3 oponentes da IA. Perfeito pra treinar!
             </p>
           </Link>
 
-          <div className="rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/30 p-6">
+          <div className="hq-panel p-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="rounded-full bg-[var(--color-gold)]/20 p-3">
-                <Users className="size-6 text-[var(--color-gold)]" />
+              <div
+                className="rounded-lg p-3"
+                style={{
+                  background: "var(--hq-accent)",
+                  border: "2.5px solid var(--ink)",
+                  boxShadow: "3px 3px 0 var(--ink)",
+                }}
+              >
+                <Users className="size-6 text-white" />
               </div>
-              <h2 className="text-xl font-bold">Multiplayer online</h2>
+              <h2 className="hq-title-sm text-2xl">MULTIPLAYER</h2>
             </div>
-            <label className="block text-xs uppercase tracking-widest text-[var(--color-muted-foreground)] mb-1">
-              Seu nome
+            <label
+              className="block text-[11px] mb-1"
+              style={{
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.06em",
+                color: "var(--ink)",
+              }}
+            >
+              SEU NOME
             </label>
             <input
               value={name}
               onChange={(e) => saveName(e.target.value)}
               maxLength={20}
               placeholder="Como quer ser chamado?"
-              className="w-full rounded-lg bg-[var(--color-background)]/60 border border-[var(--color-gold)]/20 px-3 py-2 mb-3 focus:outline-none focus:border-[var(--color-gold)]"
+              className="w-full rounded-lg px-3 py-2 mb-3 focus:outline-none"
+              style={inputStyle}
             />
             <div className="grid gap-2 sm:grid-cols-2">
               <button
                 onClick={handleCreate}
                 disabled={busy}
-                className="rounded-lg bg-[var(--color-gold)] text-[var(--color-primary-foreground)] font-bold py-2 disabled:opacity-50 hover:brightness-110 transition"
+                className="hq-btn hq-btn-primary py-2 px-3 text-white disabled:opacity-50 inline-flex items-center justify-center gap-1"
               >
-                <Sparkles className="inline size-4 -mt-0.5 mr-1" />
-                Criar sala
+                <Sparkles className="size-4" />
+                CRIAR SALA
               </button>
               <div className="flex gap-2">
                 <input
@@ -140,42 +180,56 @@ function Home() {
                   onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                   maxLength={6}
                   placeholder="CÓDIGO"
-                  className="min-w-0 flex-1 rounded-lg bg-[var(--color-background)]/60 border border-[var(--color-gold)]/20 px-3 py-2 uppercase tracking-widest focus:outline-none focus:border-[var(--color-gold)]"
+                  className="min-w-0 flex-1 rounded-lg px-3 py-2 uppercase tracking-widest focus:outline-none"
+                  style={{ ...inputStyle, fontFamily: "var(--font-display)", letterSpacing: "0.1em" }}
                 />
                 <button
                   onClick={handleJoin}
                   disabled={busy}
-                  className="shrink-0 rounded-lg border border-[var(--color-gold)] text-[var(--color-gold)] font-bold px-3 py-2 disabled:opacity-50 hover:bg-[var(--color-gold)]/10 transition"
+                  className="hq-btn px-3 py-2 disabled:opacity-50"
                 >
-                  Entrar
+                  ENTRAR
                 </button>
               </div>
             </div>
-            <p className="mt-3 text-xs text-[var(--color-muted-foreground)]">
-              Funciona em qualquer rede — mesma Wi-Fi ou internet.
+            <p
+              className="mt-3 text-xs"
+              style={{ color: "var(--ink)", fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+            >
+              Funciona em qualquer rede — Wi-Fi ou internet.
             </p>
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 mt-4">
+        <div className="grid gap-4 sm:grid-cols-2 mt-5">
           <Link
             to="/tutorial"
-            className="rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/30 p-5 hover:gold-glow transition flex items-center gap-3"
+            className="hq-panel-sm p-4 flex items-center gap-3 hover:-translate-y-0.5 transition-transform"
           >
-            <BookOpen className="size-5 text-[var(--color-gold)]" />
+            <BookOpen className="size-5" style={{ color: "var(--ink)" }} />
             <div>
-              <div className="font-semibold">Como jogar</div>
-              <div className="text-xs text-[var(--color-muted-foreground)]">Regras e dicas</div>
+              <div className="hq-title-sm text-lg">COMO JOGAR</div>
+              <div
+                className="text-xs"
+                style={{ color: "var(--ink)", opacity: 0.7, fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+              >
+                Regras e dicas
+              </div>
             </div>
           </Link>
           <Link
             to="/estatisticas"
-            className="rounded-2xl bg-[var(--color-felt-deep)]/70 border border-[var(--color-gold)]/30 p-5 hover:gold-glow transition flex items-center gap-3"
+            className="hq-panel-sm p-4 flex items-center gap-3 hover:-translate-y-0.5 transition-transform"
           >
-            <BarChart3 className="size-5 text-[var(--color-gold)]" />
+            <BarChart3 className="size-5" style={{ color: "var(--ink)" }} />
             <div>
-              <div className="font-semibold">Estatísticas</div>
-              <div className="text-xs text-[var(--color-muted-foreground)]">Seu histórico local</div>
+              <div className="hq-title-sm text-lg">ESTATÍSTICAS</div>
+              <div
+                className="text-xs"
+                style={{ color: "var(--ink)", opacity: 0.7, fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+              >
+                Seu histórico local
+              </div>
             </div>
           </Link>
         </div>

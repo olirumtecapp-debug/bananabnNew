@@ -23,25 +23,28 @@ function Estatisticas() {
 
   return (
     <div className="min-h-screen felt-bg">
-      <TopBar title="Estatísticas" showBack />
+      <TopBar title="ESTATÍSTICAS" showBack />
       <main className="max-w-2xl mx-auto px-4 pb-16">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <Stat label="Partidas" value={stats.games} />
-          <Stat label="Vitórias" value={stats.wins} highlight />
-          <Stat label="Derrotas" value={stats.losses} />
-          <Stat label="Aproveitamento" value={`${winRate}%`} />
-          <Stat label="Sequência atual" value={stats.currentStreak} />
-          <Stat label="Melhor sequência" value={stats.bestStreak} highlight />
+        <div className="text-center mb-6">
+          <div className="inline-block burst text-lg">SCORE!</div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Stat label="PARTIDAS" value={stats.games} />
+          <Stat label="VITÓRIAS" value={stats.wins} highlight />
+          <Stat label="DERROTAS" value={stats.losses} />
+          <Stat label="APROVEITAMENTO" value={`${winRate}%`} />
+          <Stat label="SEQUÊNCIA" value={stats.currentStreak} />
+          <Stat label="MELHOR" value={stats.bestStreak} highlight />
         </div>
         <button
           onClick={() => {
             resetStats();
             setStats(getStats());
           }}
-          className="mt-6 inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 px-4 py-2 text-sm hover:bg-[var(--color-gold)]/10"
+          className="mt-8 hq-btn inline-flex items-center gap-2 px-4 py-2 text-sm"
         >
           <RotateCcw className="size-4" />
-          Zerar estatísticas
+          ZERAR
         </button>
       </main>
     </div>
@@ -51,16 +54,31 @@ function Estatisticas() {
 function Stat({ label, value, highlight }: { label: string; value: number | string; highlight?: boolean }) {
   return (
     <div
-      className={`rounded-xl border p-4 ${
+      className="hq-panel p-4"
+      style={
         highlight
-          ? "border-[var(--color-gold)]/60 bg-[var(--color-gold)]/10"
-          : "border-[var(--color-gold)]/20 bg-[var(--color-felt-deep)]/60"
-      }`}
+          ? { background: "var(--hq-primary)" }
+          : undefined
+      }
     >
-      <div className="text-xs uppercase tracking-widest text-[var(--color-muted-foreground)]">
+      <div
+        className="text-[11px]"
+        style={{
+          fontFamily: "var(--font-display)",
+          letterSpacing: "0.06em",
+          color: "var(--ink)",
+        }}
+      >
         {label}
       </div>
-      <div className={`text-2xl sm:text-3xl font-black mt-1 ${highlight ? "gold-text" : ""}`}>
+      <div
+        className="text-3xl sm:text-4xl mt-1"
+        style={{
+          fontFamily: "var(--font-display)",
+          color: "var(--ink)",
+          textShadow: highlight ? "2px 2px 0 #fff" : "none",
+        }}
+      >
         {value}
       </div>
     </div>
