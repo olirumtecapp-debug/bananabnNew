@@ -111,104 +111,94 @@
 }
 
 /* ============================================
- * Ambientes HQ — cada tema muda cor de fundo,
- * padrão Ben-Day e acento primário.
+ * Modo claro (.light) — HQ bright: fundo amarelo,
+ * painéis brancos, contorno preto. Ambientes redefinem
+ * cor de fundo, padrão Ben-Day e acentos.
  * ============================================ */
-
-/* Royal Bordô HQ — fundo rosa/vermelho + acento amarelo */
-:root[data-table="bordo"] {
-  --hq-bg-a: #ffd1d1;
-  --hq-bg-b: #e63946;
+.light {
+  --ink: #0a0a0a;
+  --paper: #fffbe8;
   --hq-primary: #f7c53a;
   --hq-secondary: #e63946;
-  --hq-accent: #6d0e2c;
+  --hq-accent: #2a9d8f;
+  --hq-bg-a: #fff2b3;
+  --hq-bg-b: #f7c53a;
+  --hq-panel: #ffffff;
+
   --background: var(--hq-bg-a);
+  --foreground: var(--ink);
   --felt: var(--hq-bg-a);
+  --felt-deep: var(--hq-panel);
   --gold: var(--hq-secondary);
+  --gold-soft: var(--hq-primary);
+  --card-red: #e63946;
+  --card: var(--hq-panel);
+  --card-foreground: var(--ink);
+  --popover: var(--hq-panel);
+  --popover-foreground: var(--ink);
   --primary: var(--hq-secondary);
+  --primary-foreground: #ffffff;
   --secondary: var(--hq-primary);
+  --secondary-foreground: var(--ink);
+  --muted: #f0e6cf;
+  --muted-foreground: #2a2a2a;
   --accent: var(--hq-accent);
+  --accent-foreground: #ffffff;
+  --destructive: #d62828;
+  --destructive-foreground: #ffffff;
+  --border: var(--ink);
+  --input: var(--ink);
   --ring: var(--hq-secondary);
 }
 
-/* Safári Areia HQ — fundo bege + acento laranja */
-:root[data-table="safari"] {
-  --hq-bg-a: #ffe0b3;
-  --hq-bg-b: #e07a2b;
-  --hq-primary: #ffb347;
-  --hq-secondary: #e07a2b;
-  --hq-accent: #7a4a1e;
-  --background: var(--hq-bg-a);
-  --felt: var(--hq-bg-a);
-  --gold: var(--hq-secondary);
-  --primary: var(--hq-secondary);
-  --secondary: var(--hq-primary);
-  --accent: var(--hq-accent);
-  --ring: var(--hq-secondary);
+/* Ambientes (light) */
+.light[data-table="bordo"] {
+  --hq-bg-a: #ffd1d1; --hq-bg-b: #e63946;
+  --hq-primary: #f7c53a; --hq-secondary: #e63946; --hq-accent: #6d0e2c;
+  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --gold: var(--hq-secondary); --primary: var(--hq-secondary);
+  --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
+}
+.light[data-table="safari"] {
+  --hq-bg-a: #ffe0b3; --hq-bg-b: #e07a2b;
+  --hq-primary: #ffb347; --hq-secondary: #e07a2b; --hq-accent: #7a4a1e;
+  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --gold: var(--hq-secondary); --primary: var(--hq-secondary);
+  --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
+}
+.light[data-table="ocean"] {
+  --hq-bg-a: #bfe4ff; --hq-bg-b: #1d6fb8;
+  --hq-primary: #ffd83a; --hq-secondary: #1d6fb8; --hq-accent: #0d3b66;
+  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --gold: var(--hq-secondary); --primary: var(--hq-secondary);
+  --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
+}
+.light[data-table="pastel"] {
+  --hq-bg-a: #ffd6ec; --hq-bg-b: #ff4fa3;
+  --hq-primary: #a06bff; --hq-secondary: #ff4fa3; --hq-accent: #6a1b9a;
+  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --gold: var(--hq-secondary); --primary: var(--hq-secondary);
+  --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
 }
 
-/* Oceano Noturno HQ — fundo azul claro + acento azul cobalto */
-:root[data-table="ocean"] {
-  --hq-bg-a: #bfe4ff;
-  --hq-bg-b: #1d6fb8;
-  --hq-primary: #ffd83a;
-  --hq-secondary: #1d6fb8;
-  --hq-accent: #0d3b66;
-  --background: var(--hq-bg-a);
-  --felt: var(--hq-bg-a);
-  --gold: var(--hq-secondary);
-  --primary: var(--hq-secondary);
-  --secondary: var(--hq-primary);
-  --accent: var(--hq-accent);
-  --ring: var(--hq-secondary);
+/* Ambientes (dark) — cada tema muda apenas o acento primário/secundário */
+:root[data-table="bordo"]:not(.light) {
+  --hq-primary: #ff5a5f; --hq-secondary: #f7c53a; --hq-accent: #ff9baf;
+  --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+}
+:root[data-table="safari"]:not(.light) {
+  --hq-primary: #ffb347; --hq-secondary: #e07a2b; --hq-accent: #ffd6a5;
+  --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+}
+:root[data-table="ocean"]:not(.light) {
+  --hq-primary: #4fc3f7; --hq-secondary: #ffd83a; --hq-accent: #82e9ff;
+  --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+}
+:root[data-table="pastel"]:not(.light) {
+  --hq-primary: #ff4fa3; --hq-secondary: #a06bff; --hq-accent: #ffb3d9;
+  --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
 }
 
-/* Festa Pastel HQ — fundo rosa + acento magenta */
-:root[data-table="pastel"] {
-  --hq-bg-a: #ffd6ec;
-  --hq-bg-b: #ff4fa3;
-  --hq-primary: #a06bff;
-  --hq-secondary: #ff4fa3;
-  --hq-accent: #6a1b9a;
-  --background: var(--hq-bg-a);
-  --felt: var(--hq-bg-a);
-  --gold: var(--hq-secondary);
-  --primary: var(--hq-secondary);
-  --secondary: var(--hq-primary);
-  --accent: var(--hq-accent);
-  --ring: var(--hq-secondary);
-}
-
-/* Modo escuro (dark) — mantido: preto profundo com contorno amarelo */
-.dark {
-  --ink: #ffe86b;
-  --paper: #1a1a1a;
-  --hq-panel: #1f1f1f;
-  --hq-bg-a: #101010;
-  --hq-bg-b: #2a2a2a;
-
-  --background: #101010;
-  --foreground: #fffbe8;
-  --felt: #101010;
-  --felt-deep: #1f1f1f;
-  --gold: #f7c53a;
-  --card-red: #ff5a5f;
-  --card: #1f1f1f;
-  --card-foreground: #fffbe8;
-  --popover: #1f1f1f;
-  --popover-foreground: #fffbe8;
-  --primary: #f7c53a;
-  --primary-foreground: #101010;
-  --secondary: #2a2a2a;
-  --secondary-foreground: #fffbe8;
-  --muted: #262626;
-  --muted-foreground: #d4d4d4;
-  --accent: #ff5a5f;
-  --accent-foreground: #101010;
-  --border: #ffe86b;
-  --input: #ffe86b;
-  --ring: #f7c53a;
-}
 
 @layer base {
   * {
