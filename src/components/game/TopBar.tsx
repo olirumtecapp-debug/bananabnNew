@@ -62,5 +62,6 @@ export function TopBar({ title, showBack }: TopBarProps) {
         </button>
       </div>
     </header>
+    </>
   );
 }
