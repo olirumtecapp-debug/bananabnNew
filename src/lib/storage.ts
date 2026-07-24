@@ -70,9 +70,10 @@ export interface Prefs {
   sound: boolean;
   name: string;
   table: TableTheme;
+  avatarId: string;
 }
 
-export const DEFAULT_PREFS: Prefs = { theme: "light", sound: true, name: "", table: "classic" };
+export const DEFAULT_PREFS: Prefs = { theme: "light", sound: true, name: "", table: "classic", avatarId: "vovo" };
 
 export function getPrefs(): Prefs {
   return readJSON<Prefs>("mico:prefs", DEFAULT_PREFS);

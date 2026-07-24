@@ -235,31 +235,30 @@
   }
   body {
     background-color: var(--hq-bg-a);
-    /* Camadas: gradiente diagonal + trama Ben-Day + vinheta suave */
+    /* Camadas: cenário HQ + trama Ben-Day + vinheta suave */
     background-image:
-      radial-gradient(ellipse at top left, color-mix(in oklab, var(--hq-bg-b) 25%, transparent), transparent 55%),
-      radial-gradient(ellipse at bottom right, color-mix(in oklab, var(--hq-bg-b) 22%, transparent), transparent 55%),
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 40%, transparent) 1.5px, transparent 2px),
-      linear-gradient(135deg,
-        color-mix(in oklab, var(--hq-bg-a) 100%, transparent) 0%,
-        color-mix(in oklab, var(--hq-bg-b) 18%, var(--hq-bg-a)) 100%);
-    background-size: auto, auto, 16px 16px, auto;
-    background-attachment: fixed;
+      radial-gradient(ellipse at center, transparent 0%, color-mix(in oklab, var(--hq-bg-a) 85%, black) 100%),
+      radial-gradient(circle, color-mix(in oklab, var(--ink) 22%, transparent) 1px, transparent 2px),
+      var(--scene, none);
+    background-size: auto, 14px 14px, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, repeat, no-repeat;
+    background-attachment: fixed, fixed, fixed;
     color: var(--foreground);
     font-family: "Comic Neue", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-weight: 700;
     padding: env(safe-area-inset-top) env(safe-area-inset-right)
              env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
-  .dark body, :root:not(.light) body {
-    background-image:
-      radial-gradient(ellipse at top left, color-mix(in oklab, var(--hq-bg-b) 30%, transparent), transparent 55%),
-      radial-gradient(ellipse at bottom right, color-mix(in oklab, var(--hq-bg-b) 25%, transparent), transparent 55%),
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 55%, transparent) 1.5px, transparent 2px),
-      linear-gradient(135deg, var(--hq-bg-a) 0%, color-mix(in oklab, var(--hq-bg-b) 22%, var(--hq-bg-a)) 100%);
-    background-size: auto, auto, 16px 16px, auto;
-    background-attachment: fixed;
-  }
+
+
+  /* Cenários HQ por ambiente (var --scene) */
+  :root[data-table="classic"] { --scene: url("/__l5e/assets-v1/93a869b6-a659-4ead-8b81-25066cebb777/classic.jpg"); }
+  :root[data-table="bordo"]   { --scene: url("/__l5e/assets-v1/c0a131b4-2096-4f31-a5f6-cdc1c56bc382/bordo.jpg"); }
+  :root[data-table="safari"]  { --scene: url("/__l5e/assets-v1/412adb55-e3b0-4cc3-94a3-256bd05e9f89/safari.jpg"); }
+  :root[data-table="ocean"]   { --scene: url("/__l5e/assets-v1/fa41a358-0f06-4753-bca4-d64dad1e8c65/ocean.jpg"); }
+  :root[data-table="pastel"]  { --scene: url("/__l5e/assets-v1/d9eecccc-8de1-4c0a-9fed-495ff715ef2d/pastel.jpg"); }
+
   h1, h2, h3 {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
