@@ -53,44 +53,45 @@
 :root {
   --radius: 0.75rem;
 
-  /* HQ base — Cassino Clássico (amarelo canário + acento verde) */
-  --ink: #0a0a0a;
-  --paper: #fffbe8;
-  --hq-primary: #f7c53a;      /* amarelo canário */
-  --hq-secondary: #e63946;    /* vermelho HQ */
-  --hq-accent: #2a9d8f;       /* verde/azul acento */
-  --hq-bg-a: #fff2b3;         /* base do fundo */
-  --hq-bg-b: #f7c53a;          /* pontos Ben-Day */
-  --hq-panel: #ffffff;
+  /* HQ base — modo escuro por padrão (preto profundo, contorno amarelo) */
+  --ink: #ffe86b;
+  --paper: #1a1a1a;
+  --hq-primary: #f7c53a;
+  --hq-secondary: #ff5a5f;
+  --hq-accent: #4dd0c1;
+  --hq-bg-a: #0f0f10;
+  --hq-bg-b: #2a2a2a;
+  --hq-panel: #1f1f1f;
 
   --background: var(--hq-bg-a);
-  --foreground: var(--ink);
+  --foreground: #fffbe8;
 
   --felt: var(--hq-bg-a);
   --felt-deep: var(--hq-panel);
-  --gold: var(--hq-secondary);
+  --gold: var(--hq-primary);
   --gold-soft: var(--hq-primary);
-  --card-red: #e63946;
+  --card-red: var(--hq-secondary);
 
   --card: var(--hq-panel);
-  --card-foreground: var(--ink);
+  --card-foreground: #fffbe8;
   --popover: var(--hq-panel);
-  --popover-foreground: var(--ink);
+  --popover-foreground: #fffbe8;
 
-  --primary: var(--hq-secondary);
-  --primary-foreground: #ffffff;
-  --secondary: var(--hq-primary);
-  --secondary-foreground: var(--ink);
-  --muted: #f0e6cf;
-  --muted-foreground: #2a2a2a;
-  --accent: var(--hq-accent);
+  --primary: var(--hq-primary);
+  --primary-foreground: #0f0f10;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #fffbe8;
+  --muted: #262626;
+  --muted-foreground: #d4d4d4;
+  --accent: var(--hq-secondary);
   --accent-foreground: #ffffff;
 
-  --destructive: #d62828;
+  --destructive: #ff5a5f;
   --destructive-foreground: #ffffff;
   --border: var(--ink);
   --input: var(--ink);
-  --ring: var(--hq-secondary);
+  --ring: var(--hq-primary);
+
 
   /* Cores pastéis das cartas das frutas — mais saturadas p/ HQ */
   --pastel-pink:      #ffb3cc;
