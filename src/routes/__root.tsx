@@ -136,6 +136,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      {/* Cenário HQ do ambiente atual, fixado atrás de tudo. */}
+      <div aria-hidden className="scene-layer" />
       <Outlet />
     </QueryClientProvider>
   );
