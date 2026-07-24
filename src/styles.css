@@ -251,7 +251,7 @@
              env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
 
-  }
+
   /* Cenários HQ por ambiente (var --scene) */
   :root[data-table="classic"] { --scene: url("/__l5e/assets-v1/93a869b6-a659-4ead-8b81-25066cebb777/classic.jpg"); }
   :root[data-table="bordo"]   { --scene: url("/__l5e/assets-v1/c0a131b4-2096-4f31-a5f6-cdc1c56bc382/bordo.jpg"); }
