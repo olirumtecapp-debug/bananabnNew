@@ -127,7 +127,7 @@
 
   --background: var(--hq-bg-a);
   --foreground: var(--ink);
-  --felt: var(--hq-bg-a);
+  --felt: #2a9d5a;
   --felt-deep: var(--hq-panel);
   --gold: var(--hq-secondary);
   --gold-soft: var(--hq-primary);
