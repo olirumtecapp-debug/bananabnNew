@@ -72,7 +72,7 @@ export interface Prefs {
   table: TableTheme;
 }
 
-export const DEFAULT_PREFS: Prefs = { theme: "dark", sound: true, name: "", table: "classic" };
+export const DEFAULT_PREFS: Prefs = { theme: "light", sound: true, name: "", table: "classic" };
 
 export function getPrefs(): Prefs {
   return readJSON<Prefs>("mico:prefs", DEFAULT_PREFS);
