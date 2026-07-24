@@ -292,12 +292,12 @@
     padding: 18px;
   }
 
-  /* Fundo com padrão Ben-Day herdando das variáveis do tema */
+  /* Feltro da mesa — cor sólida do tema (--felt) com trama Ben-Day sutil */
   .felt-bg {
-    background-color: var(--hq-bg-a);
+    background-color: var(--felt);
     background-image:
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 45%, transparent) 1.5px, transparent 2px);
-    background-size: 14px 14px;
+      radial-gradient(circle, color-mix(in oklab, var(--ink) 18%, transparent) 1.2px, transparent 1.8px);
+    background-size: 12px 12px;
   }
   .halftone-bg {
     background-image:
@@ -305,19 +305,6 @@
     background-size: 10px 10px;
   }
 
-@layer utilities {
-  /* Fundo com padrão Ben-Day herdando das variáveis do tema */
-  .felt-bg {
-    background-color: var(--hq-bg-a);
-    background-image:
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 45%, transparent) 1.5px, transparent 2px);
-    background-size: 14px 14px;
-  }
-  .halftone-bg {
-    background-image:
-      radial-gradient(circle, color-mix(in oklab, var(--ink) 55%, transparent) 1.5px, transparent 2px);
-    background-size: 10px 10px;
-  }
 
   /* Painel HQ: branco, borda preta grossa, sombra chapada offset */
   .hq-panel {
