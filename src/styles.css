@@ -235,29 +235,17 @@
   }
   body {
     background-color: var(--hq-bg-a);
-    /* Camadas: cenário HQ + trama Ben-Day + vinheta suave */
+    /* Trama Ben-Day sutil sobre a cor de fundo — o cenário vive na .scene-layer. */
     background-image:
-      radial-gradient(ellipse at center, transparent 0%, color-mix(in oklab, var(--hq-bg-a) 85%, black) 100%),
-      radial-gradient(circle, color-mix(in oklab, var(--ink) 22%, transparent) 1px, transparent 2px),
-      var(--scene, none);
-    background-size: auto, 14px 14px, cover;
-    background-position: center, center, center;
-    background-repeat: no-repeat, repeat, no-repeat;
-    background-attachment: fixed, fixed, fixed;
+      radial-gradient(circle, color-mix(in oklab, var(--ink) 14%, transparent) 1px, transparent 2px);
+    background-size: 14px 14px;
+    background-attachment: fixed;
     color: var(--foreground);
     font-family: "Comic Neue", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-weight: 700;
     padding: env(safe-area-inset-top) env(safe-area-inset-right)
              env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
-
-
-  /* Cenários HQ por ambiente (var --scene) */
-  :root[data-table="classic"] { --scene: url("/__l5e/assets-v1/93a869b6-a659-4ead-8b81-25066cebb777/classic.jpg"); }
-  :root[data-table="bordo"]   { --scene: url("/__l5e/assets-v1/c0a131b4-2096-4f31-a5f6-cdc1c56bc382/bordo.jpg"); }
-  :root[data-table="safari"]  { --scene: url("/__l5e/assets-v1/412adb55-e3b0-4cc3-94a3-256bd05e9f89/safari.jpg"); }
-  :root[data-table="ocean"]   { --scene: url("/__l5e/assets-v1/fa41a358-0f06-4753-bca4-d64dad1e8c65/ocean.jpg"); }
-  :root[data-table="pastel"]  { --scene: url("/__l5e/assets-v1/d9eecccc-8de1-4c0a-9fed-495ff715ef2d/pastel.jpg"); }
 
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -266,7 +254,31 @@
   }
 }
 
+/* Cenários HQ por ambiente (var --scene) — ficam fora do @layer base
+   para não serem envolvidos por seletores aninhados. */
+:root[data-table="classic"] { --scene: url("/__l5e/assets-v1/93a869b6-a659-4ead-8b81-25066cebb777/classic.jpg"); }
+:root[data-table="bordo"]   { --scene: url("/__l5e/assets-v1/c0a131b4-2096-4f31-a5f6-cdc1c56bc382/bordo.jpg"); }
+:root[data-table="safari"]  { --scene: url("/__l5e/assets-v1/412adb55-e3b0-4cc3-94a3-256bd05e9f89/safari.jpg"); }
+:root[data-table="ocean"]   { --scene: url("/__l5e/assets-v1/fa41a358-0f06-4753-bca4-d64dad1e8c65/ocean.jpg"); }
+:root[data-table="pastel"]  { --scene: url("/__l5e/assets-v1/d9eecccc-8de1-4c0a-9fed-495ff715ef2d/pastel.jpg"); }
+
+
 @layer utilities {
+  /* Cenário HQ fixo atrás de tudo — imagem do tema atual + vinheta suave. */
+  .scene-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background-color: var(--hq-bg-a);
+    background-image:
+      radial-gradient(ellipse at center, transparent 30%, color-mix(in oklab, var(--hq-bg-a) 55%, black) 100%),
+      var(--scene, none);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+  }
+
   /* Faixa decorativa HQ (diagonais amarelo/preto) */
   .hq-stripe {
     background-image: repeating-linear-gradient(
@@ -291,18 +303,27 @@
     padding: 18px;
   }
 
-  /* Feltro da mesa — cor sólida do tema (--felt) com trama Ben-Day sutil */
+  /* Feltro translúcido — deixa o cenário HQ aparecer nas margens */
   .felt-bg {
-    background-color: var(--felt);
+    background-color: color-mix(in oklab, var(--felt) 86%, transparent);
     background-image:
       radial-gradient(circle, color-mix(in oklab, var(--ink) 18%, transparent) 1.2px, transparent 1.8px);
     background-size: 12px 12px;
+    backdrop-filter: blur(2px);
   }
   .halftone-bg {
     background-image:
       radial-gradient(circle, color-mix(in oklab, var(--ink) 55%, transparent) 1.5px, transparent 2px);
     background-size: 10px 10px;
   }
+
+  /* Sobreposição responsiva das cartas na mão: usa vars definidas em Hand.tsx */
+  .hand-item { --hand-overlap: var(--hand-overlap-mobile); }
+  @media (min-width: 640px) {
+    .hand-item { --hand-overlap: var(--hand-overlap-desk); }
+  }
+
+
 
 
   /* Painel HQ: branco, borda preta grossa, sombra chapada offset */

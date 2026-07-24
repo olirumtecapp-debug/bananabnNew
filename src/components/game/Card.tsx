@@ -16,7 +16,7 @@ interface CardProps {
  */
 export function Card({ card, faceDown = false, small = false, selectable, onClick, highlighted }: CardProps) {
   const showBack = faceDown || !card;
-  const w = small ? "w-10 h-14 sm:w-12 sm:h-16" : "w-16 h-24 sm:w-20 sm:h-28";
+  const w = small ? "w-9 h-12 sm:w-12 sm:h-16" : "w-14 h-20 sm:w-20 sm:h-28";
 
   return (
     <motion.button
