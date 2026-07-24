@@ -151,52 +151,78 @@
   --ring: var(--hq-secondary);
 }
 
-/* Ambientes (light) */
+/* Ambientes (light) — cada tema define fundo (bg-a), tinta secundária (bg-b) e acentos */
+.light[data-table="classic"] {
+  --hq-bg-a: #bde8c6; --hq-bg-b: #1f7a45;
+  --hq-primary: #f7c53a; --hq-secondary: #1f7a45; --hq-accent: #e63946;
+  --background: var(--hq-bg-a); --felt: #2a9d5a;
+  --gold: var(--hq-primary); --primary: var(--hq-secondary);
+  --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
+}
 .light[data-table="bordo"] {
-  --hq-bg-a: #ffd1d1; --hq-bg-b: #e63946;
-  --hq-primary: #f7c53a; --hq-secondary: #e63946; --hq-accent: #6d0e2c;
-  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --hq-bg-a: #ffd1d1; --hq-bg-b: #a01935;
+  --hq-primary: #f7c53a; --hq-secondary: #a01935; --hq-accent: #6d0e2c;
+  --background: var(--hq-bg-a); --felt: #c8213f;
   --gold: var(--hq-secondary); --primary: var(--hq-secondary);
   --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
 }
 .light[data-table="safari"] {
-  --hq-bg-a: #ffe0b3; --hq-bg-b: #e07a2b;
-  --hq-primary: #ffb347; --hq-secondary: #e07a2b; --hq-accent: #7a4a1e;
-  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --hq-bg-a: #fce6c2; --hq-bg-b: #b56b1f;
+  --hq-primary: #ffb347; --hq-secondary: #b56b1f; --hq-accent: #7a4a1e;
+  --background: var(--hq-bg-a); --felt: #d98a3a;
   --gold: var(--hq-secondary); --primary: var(--hq-secondary);
   --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
 }
 .light[data-table="ocean"] {
-  --hq-bg-a: #bfe4ff; --hq-bg-b: #1d6fb8;
+  --hq-bg-a: #bfe4ff; --hq-bg-b: #0d3b66;
   --hq-primary: #ffd83a; --hq-secondary: #1d6fb8; --hq-accent: #0d3b66;
-  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --background: var(--hq-bg-a); --felt: #1d6fb8;
   --gold: var(--hq-secondary); --primary: var(--hq-secondary);
   --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
 }
 .light[data-table="pastel"] {
-  --hq-bg-a: #ffd6ec; --hq-bg-b: #ff4fa3;
+  --hq-bg-a: #ffd6ec; --hq-bg-b: #6a1b9a;
   --hq-primary: #a06bff; --hq-secondary: #ff4fa3; --hq-accent: #6a1b9a;
-  --background: var(--hq-bg-a); --felt: var(--hq-bg-a);
+  --background: var(--hq-bg-a); --felt: #ff8fc7;
   --gold: var(--hq-secondary); --primary: var(--hq-secondary);
   --secondary: var(--hq-primary); --accent: var(--hq-accent); --ring: var(--hq-secondary);
 }
 
-/* Ambientes (dark) — cada tema muda apenas o acento primário/secundário */
-:root[data-table="bordo"]:not(.light) {
-  --hq-primary: #ff5a5f; --hq-secondary: #f7c53a; --hq-accent: #ff9baf;
+/* Ambientes (dark) — fundo profundo colorido em vez de preto puro */
+:root[data-table="classic"]:not(.light) {
+  --hq-bg-a: #0d2a1a; --hq-bg-b: #2a9d5a;
+  --hq-primary: #f7c53a; --hq-secondary: #2a9d5a; --hq-accent: #4dd0c1;
+  --felt: #1a4d33;
   --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+  --background: var(--hq-bg-a);
+}
+:root[data-table="bordo"]:not(.light) {
+  --hq-bg-a: #2b0a14; --hq-bg-b: #c8213f;
+  --hq-primary: #ff5a5f; --hq-secondary: #f7c53a; --hq-accent: #ff9baf;
+  --felt: #5a0f22;
+  --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+  --background: var(--hq-bg-a);
 }
 :root[data-table="safari"]:not(.light) {
+  --hq-bg-a: #2a1a08; --hq-bg-b: #d98a3a;
   --hq-primary: #ffb347; --hq-secondary: #e07a2b; --hq-accent: #ffd6a5;
+  --felt: #7a4a1e;
   --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+  --background: var(--hq-bg-a);
 }
 :root[data-table="ocean"]:not(.light) {
+  --hq-bg-a: #061d33; --hq-bg-b: #4fc3f7;
   --hq-primary: #4fc3f7; --hq-secondary: #ffd83a; --hq-accent: #82e9ff;
+  --felt: #0d3b66;
   --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+  --background: var(--hq-bg-a);
 }
 :root[data-table="pastel"]:not(.light) {
+  --hq-bg-a: #2a0f24; --hq-bg-b: #ff4fa3;
   --hq-primary: #ff4fa3; --hq-secondary: #a06bff; --hq-accent: #ffb3d9;
+  --felt: #6a1b9a;
   --gold: var(--hq-primary); --primary: var(--hq-primary); --ring: var(--hq-primary);
+  --background: var(--hq-bg-a);
 }
 
 
@@ -209,19 +235,30 @@
   }
   body {
     background-color: var(--hq-bg-a);
-    /* Padrão Ben-Day: pontos regulares */
+    /* Camadas: gradiente diagonal + trama Ben-Day + vinheta suave */
     background-image:
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 45%, transparent) 1.5px, transparent 2px);
-    background-size: 14px 14px;
+      radial-gradient(ellipse at top left, color-mix(in oklab, var(--hq-bg-b) 25%, transparent), transparent 55%),
+      radial-gradient(ellipse at bottom right, color-mix(in oklab, var(--hq-bg-b) 22%, transparent), transparent 55%),
+      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 40%, transparent) 1.5px, transparent 2px),
+      linear-gradient(135deg,
+        color-mix(in oklab, var(--hq-bg-a) 100%, transparent) 0%,
+        color-mix(in oklab, var(--hq-bg-b) 18%, var(--hq-bg-a)) 100%);
+    background-size: auto, auto, 16px 16px, auto;
+    background-attachment: fixed;
     color: var(--foreground);
     font-family: "Comic Neue", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-weight: 700;
     padding: env(safe-area-inset-top) env(safe-area-inset-right)
              env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
-  .dark body {
+  .dark body, :root:not(.light) body {
     background-image:
-      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 60%, transparent) 1.5px, transparent 2px);
+      radial-gradient(ellipse at top left, color-mix(in oklab, var(--hq-bg-b) 30%, transparent), transparent 55%),
+      radial-gradient(ellipse at bottom right, color-mix(in oklab, var(--hq-bg-b) 25%, transparent), transparent 55%),
+      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 55%, transparent) 1.5px, transparent 2px),
+      linear-gradient(135deg, var(--hq-bg-a) 0%, color-mix(in oklab, var(--hq-bg-b) 22%, var(--hq-bg-a)) 100%);
+    background-size: auto, auto, 16px 16px, auto;
+    background-attachment: fixed;
   }
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -229,6 +266,44 @@
     font-weight: 400;
   }
 }
+
+@layer utilities {
+  /* Faixa decorativa HQ (diagonais amarelo/preto) */
+  .hq-stripe {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--ink) 0 10px,
+      var(--hq-primary) 10px 20px
+    );
+    border-top: 3px solid var(--ink);
+    border-bottom: 3px solid var(--ink);
+    height: 10px;
+  }
+
+  /* Painel "mesa" — feltro flutuando sobre o fundo */
+  .table-panel {
+    background-color: var(--felt);
+    background-image:
+      radial-gradient(circle, color-mix(in oklab, var(--ink) 20%, transparent) 1.2px, transparent 1.8px);
+    background-size: 12px 12px;
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    box-shadow: 8px 8px 0 var(--ink), inset 0 0 0 3px color-mix(in oklab, var(--hq-primary) 60%, transparent);
+    padding: 18px;
+  }
+
+  /* Fundo com padrão Ben-Day herdando das variáveis do tema */
+  .felt-bg {
+    background-color: var(--hq-bg-a);
+    background-image:
+      radial-gradient(circle, color-mix(in oklab, var(--hq-bg-b) 45%, transparent) 1.5px, transparent 2px);
+    background-size: 14px 14px;
+  }
+  .halftone-bg {
+    background-image:
+      radial-gradient(circle, color-mix(in oklab, var(--ink) 55%, transparent) 1.5px, transparent 2px);
+    background-size: 10px 10px;
+  }
 
 @layer utilities {
   /* Fundo com padrão Ben-Day herdando das variáveis do tema */
