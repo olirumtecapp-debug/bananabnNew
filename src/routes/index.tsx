@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { TopBar } from "@/components/game/TopBar";
-import { Bot, Users, BookOpen, BarChart3, Sparkles } from "lucide-react";
+import { Bot, Users, BookOpen, BarChart3, Sparkles, Heart } from "lucide-react";
 import { getPlayerId, getPrefs, setPrefs } from "@/lib/storage";
 import { createRoomFn, joinRoomFn } from "@/lib/mico.functions";
 import { toast, Toaster } from "sonner";
@@ -201,7 +201,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 mt-5">
+        <div className="grid gap-4 sm:grid-cols-3 mt-5">
           <Link
             to="/tutorial"
             className="hq-panel-sm p-4 flex items-center gap-3 hover:-translate-y-0.5 transition-transform"
@@ -229,6 +229,24 @@ function Home() {
                 style={{ color: "var(--ink)", opacity: 0.7, fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
               >
                 Seu histórico local
+              </div>
+            </div>
+          </Link>
+          <Link
+            to="/doacao"
+            className="hq-panel-sm p-4 flex items-center gap-3 hover:-translate-y-0.5 transition-transform"
+          >
+            <Heart
+              className="size-5 fill-current"
+              style={{ color: "var(--hq-accent)" }}
+            />
+            <div>
+              <div className="hq-title-sm text-lg">APOIAR O PROJETO</div>
+              <div
+                className="text-xs"
+                style={{ color: "var(--ink)", opacity: 0.7, fontFamily: "Comic Neue, sans-serif", fontWeight: 700 }}
+              >
+                Doe via Pix 🍌
               </div>
             </div>
           </Link>
