@@ -4,7 +4,7 @@ import { Heart, Home, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { TopBar } from "@/components/game/TopBar";
 import { sfx } from "@/lib/sound";
-import qrAsset from "@/assets/qrcode-c6.jpeg.asset.json";
+import qrAsset from "@/assets/qrcode-c6.png.asset.json";
 
 export const Route = createFileRoute("/doacao")({
   head: () => ({
