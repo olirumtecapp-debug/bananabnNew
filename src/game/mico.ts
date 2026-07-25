@@ -133,25 +133,42 @@ export function createGame(playerSpecs: { id: string; name: string; isBot: boole
   return state;
 }
 
-/** Agrupa por animalId. O Mico nunca casa (é único). */
-export function extractPairs(hand: Card[]): { hand: Card[]; pairs: Card[][] } {
+/**
+ * Agrupa por animalId. O Mico nunca casa (é único).
+ * A Banana (Mico) é inserida em posição ALEATÓRIA da mão restante,
+ * para não ficar sempre no índice 0 e denunciar sua localização.
+ */
+export function extractPairs(
+  hand: Card[],
+  rng: () => number = Math.random,
+): { hand: Card[]; pairs: Card[][] } {
   const byAnimal = new Map<string, Card[]>();
+  const micoCards: Card[] = [];
   for (const c of hand) {
-    if (c.isMico) continue; // mico jamais forma par
+    if (c.isMico) {
+      micoCards.push(c);
+      continue;
+    }
     const k = c.animalId;
     if (!byAnimal.has(k)) byAnimal.set(k, []);
     byAnimal.get(k)!.push(c);
   }
   const pairs: Card[][] = [];
-  const remaining: Card[] = hand.filter((c) => c.isMico);
+  const remaining: Card[] = [];
   for (const [, cards] of byAnimal) {
     while (cards.length >= 2) {
       pairs.push([cards.shift()!, cards.shift()!]);
     }
     remaining.push(...cards);
   }
+  // Insere a Banana em uma posição aleatória do que sobrou.
+  for (const mico of micoCards) {
+    const pos = Math.floor(rng() * (remaining.length + 1));
+    remaining.splice(pos, 0, mico);
+  }
   return { hand: remaining, pairs };
 }
+
 
 export function playTurn(state: GameState, cardIndex: number): GameState {
   if (state.status !== "playing") return state;
