@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Home, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { TopBar } from "@/components/game/TopBar";
 import { sfx } from "@/lib/sound";
 import qrAsset from "@/assets/qrcode-c6.png.asset.json";
+
+const PIX_COPIA_COLA =
+  "00020101021126580014br.gov.bcb.pix0136ccc2fd5a-cc51-4626-ac9b-8010315042f55204000053039865802BR5924MURILO FERREIRA DA SILVA6009SAO PAULO622905251KYF6GJBG4K0TVYH7QKHP9TSD63042519";
 
 export const Route = createFileRoute("/doacao")({
   head: () => ({
@@ -36,12 +39,12 @@ export const Route = createFileRoute("/doacao")({
 function DoacaoPage() {
   const [copied, setCopied] = useState(false);
 
-  const copyName = async () => {
+  const copyPixCode = async () => {
     try {
-      await navigator.clipboard.writeText("Murilo Ferreira da Silva");
+      await navigator.clipboard.writeText(PIX_COPIA_COLA);
       sfx.pick();
       setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
+      setTimeout(() => setCopied(false), 2800);
     } catch {}
   };
 
@@ -51,6 +54,14 @@ function DoacaoPage() {
     border: "2.5px solid var(--ink)",
     boxShadow: "5px 5px 0 var(--ink)",
     borderRadius: "12px",
+  } as const;
+
+  const codeBoxStyle = {
+    background: "#fff",
+    color: "var(--ink)",
+    border: "2.5px solid var(--ink)",
+    boxShadow: "3px 3px 0 var(--ink)",
+    borderRadius: "8px",
   } as const;
 
   return (
@@ -180,35 +191,14 @@ function DoacaoPage() {
               >
                 FAVORECIDO
               </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <div
-                  className="font-bold text-xl"
-                  style={{
-                    fontFamily: "Comic Neue, sans-serif",
-                    color: "var(--ink)",
-                  }}
-                >
-                  Murilo Ferreira da Silva
-                </div>
-                <button
-                  onClick={copyName}
-                  className="p-1.5 transition-colors"
-                  style={{
-                    background: "var(--hq-panel)",
-                    border: "2.5px solid var(--ink)",
-                    boxShadow: "2px 2px 0 var(--ink)",
-                    borderRadius: "6px",
-                    color: "var(--ink)",
-                  }}
-                  title="Copiar nome"
-                  aria-label="Copiar nome"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
+              <div
+                className="font-bold text-xl"
+                style={{
+                  fontFamily: "Comic Neue, sans-serif",
+                  color: "var(--ink)",
+                }}
+              >
+                Murilo Ferreira da Silva
               </div>
               <div
                 className="text-sm mt-1 italic"
@@ -221,6 +211,64 @@ function DoacaoPage() {
               >
                 Motorista &amp; desenvolvedor 🚗💻
               </div>
+            </div>
+
+            <div>
+              <div
+                className="hq-title-sm text-sm"
+                style={{ opacity: 0.7, letterSpacing: "0.1em" }}
+              >
+                PIX COPIA E COLA
+              </div>
+              <div className="flex items-start gap-2 mt-1">
+                <div
+                  className="flex-1 min-w-0 p-2 overflow-x-auto text-xs font-mono break-all"
+                  style={codeBoxStyle}
+                >
+                  {PIX_COPIA_COLA}
+                </div>
+                <button
+                  onClick={copyPixCode}
+                  className="shrink-0 p-2 transition-colors"
+                  style={{
+                    background: "var(--hq-panel)",
+                    border: "2.5px solid var(--ink)",
+                    boxShadow: "2px 2px 0 var(--ink)",
+                    borderRadius: "6px",
+                    color: "var(--ink)",
+                  }}
+                  title="Copiar código Pix"
+                  aria-label="Copiar código Pix"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              <AnimatePresence>
+                {copied && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    className="mt-2 px-3 py-2 text-sm"
+                    style={{
+                      background: "var(--hq-accent)",
+                      color: "#fff",
+                      border: "2.5px solid var(--ink)",
+                      boxShadow: "3px 3px 0 var(--ink)",
+                      borderRadius: "8px",
+                      fontFamily: "Comic Neue, sans-serif",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✅ Código Pix copiado! Abra seu app de banco e cole no{" "}
+                    <strong>Pix Copia e Cola</strong>.
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div
