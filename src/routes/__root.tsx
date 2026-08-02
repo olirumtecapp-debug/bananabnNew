@@ -115,6 +115,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
     ],
+    scripts: [
+      { src: "https://projetoij.lovable.app/api/public/pij.js", defer: true },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -131,8 +134,6 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
-        {/* Script externo do Projeto IJ */}
-        <script src="https://projetoij.lovable.app/api/public/pij.js" defer />
       </body>
     </html>
   );
