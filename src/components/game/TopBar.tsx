@@ -42,15 +42,6 @@ export function TopBar({ title, showBack }: TopBarProps) {
       </h1>
       <div className="flex items-center gap-2 shrink-0">
         <ThemePicker />
-        <Link
-          to="/doacao"
-          className={btn}
-          style={{ ...btnStyle, background: "var(--hq-accent)", color: "#fff" }}
-          aria-label="Doação"
-          title="Apoie o projeto"
-        >
-          <Heart className="size-4 fill-current" />
-        </Link>
         <button
           onClick={() => update({ sound: !prefs.sound })}
           className={btn}

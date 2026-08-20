@@ -146,7 +146,6 @@ function RootComponent() {
       {/* Cenário HQ do ambiente atual, fixado atrás de tudo. */}
       <div aria-hidden className="scene-layer" />
       <Outlet />
-      <RotateLock />
     </QueryClientProvider>
   );
 }
