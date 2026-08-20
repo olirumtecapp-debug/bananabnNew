@@ -1,9 +1,59 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter, createHashHistory } from "@tanstack/react-router";
+import {
+  createRouter,
+  createRoute,
+  createRootRoute,
+  RouterProvider,
+  createHashHistory,
+  Outlet,
+} from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { routeTree } from "./routeTree.gen";
+import { Route as IndexRoute } from "./routes/index";
+import { Route as JogarIaRoute } from "./routes/jogar.ia";
+import { Route as TutorialRoute } from "./routes/tutorial";
+import { Route as EstatisticasRoute } from "./routes/estatisticas";
 import "./styles.css";
+
+const rootRoute = createRootRoute({
+  component: () => (
+    <>
+      <div aria-hidden className="scene-layer" />
+      <Outlet />
+    </>
+  ),
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: IndexRoute.options.component,
+});
+
+const jogarIaRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/jogar/ia",
+  component: JogarIaRoute.options.component,
+});
+
+const tutorialRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/tutorial",
+  component: TutorialRoute.options.component,
+});
+
+const estatisticasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/estatisticas",
+  component: EstatisticasRoute.options.component,
+});
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  jogarIaRoute,
+  tutorialRoute,
+  estatisticasRoute,
+]);
 
 const queryClient = new QueryClient();
 const hashHistory = createHashHistory();
@@ -11,9 +61,6 @@ const hashHistory = createHashHistory();
 const router = createRouter({
   routeTree,
   history: hashHistory,
-  context: {
-    queryClient,
-  },
 });
 
 declare module "@tanstack/react-router" {
