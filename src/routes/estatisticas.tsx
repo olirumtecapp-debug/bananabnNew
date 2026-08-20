@@ -14,7 +14,7 @@ export const Route = createFileRoute("/estatisticas")({
   component: Estatisticas,
 });
 
-function Estatisticas() {
+export function Estatisticas() {
   const [stats, setStats] = useState<Stats | null>(null);
   useEffect(() => setStats(getStats()), []);
   if (!stats) return null;

@@ -26,7 +26,7 @@ export const Route = createFileRoute("/jogar/ia")({
   component: PartidaIA,
 });
 
-function PartidaIA() {
+export function PartidaIA() {
   const [numOpponents, setNumOpponents] = useState(1);
   const [avatarId, setAvatarId] = useState<string>(() => {
     if (typeof window === "undefined") return "vovo";

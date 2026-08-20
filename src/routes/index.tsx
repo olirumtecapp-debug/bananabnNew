@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-function Home() {
+export function Home() {
   const [name, setName] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [busy, setBusy] = useState(false);

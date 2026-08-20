@@ -48,7 +48,7 @@ const steps = [
   },
 ];
 
-function Tutorial() {
+export function Tutorial() {
   return (
     <div className="min-h-screen felt-bg">
       <TopBar title="COMO JOGAR" showBack />
