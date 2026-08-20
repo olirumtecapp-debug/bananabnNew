@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@tanstack/react-router": path.resolve(__dirname, "./src/mock-router.tsx"),
+      "@tanstack/react-start": path.resolve(__dirname, "./src/mock-react-start.ts"),
     },
   },
   build: {
