@@ -227,7 +227,15 @@ function PartidaIA() {
         </section>
 
         {/* Mãos dos oponentes (para o humano escolher) */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <section
+          className={`grid gap-3 w-full ${
+            opponents.length === 1
+              ? "max-w-2xl mx-auto"
+              : opponents.length === 2
+              ? "grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto"
+              : "grid-cols-1 sm:grid-cols-3 max-w-5xl mx-auto"
+          }`}
+        >
           {opponents.map((op) => {
             const isTarget = isHumanTurn && op.id === target.id;
             return (
@@ -290,8 +298,8 @@ function PartidaIA() {
 
         <TurnBanner state={state} />
 
-        {/* Área do humano */}
-        <section className="hq-panel p-3 sm:p-4">
+        {/* Área do humano (mesmo tamanho max-w-2xl) */}
+        <section className="hq-panel p-3 sm:p-4 max-w-2xl mx-auto w-full">
           <div className="flex items-center gap-4 mb-2">
             <PlayerSeat
               avatar={humanAvatar}
