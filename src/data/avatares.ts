@@ -1,14 +1,3 @@
-import vovo from "@/assets/avatars/vovo.png.asset.json";
-import dj from "@/assets/avatars/dj.png.asset.json";
-import detetive from "@/assets/avatars/detetive.png.asset.json";
-import chef from "@/assets/avatars/chef.png.asset.json";
-import piloto from "@/assets/avatars/piloto.png.asset.json";
-import pirata from "@/assets/avatars/pirata.png.asset.json";
-import cientista from "@/assets/avatars/cientista.png.asset.json";
-import skatista from "@/assets/avatars/skatista.png.asset.json";
-import diva from "@/assets/avatars/diva.png.asset.json";
-import robo from "@/assets/avatars/robo.png.asset.json";
-
 export type Personalidade = "sarcastico" | "brincalhao" | "competitivo" | "timido" | "confiante";
 
 export interface Avatar {
@@ -20,16 +9,16 @@ export interface Avatar {
 }
 
 export const AVATARES: Avatar[] = [
-  { id: "vovo",       nome: "Vovó Nice",     url: vovo.url,       cor: "#ffe86b", personalidade: "brincalhao" },
-  { id: "dj",         nome: "DJ Kiko",       url: dj.url,         cor: "#4fc3f7", personalidade: "confiante" },
-  { id: "detetive",   nome: "Detetive Zé",   url: detetive.url,   cor: "#ffb87a", personalidade: "sarcastico" },
-  { id: "chef",       nome: "Chef Tuti",     url: chef.url,       cor: "#ff5a5f", personalidade: "brincalhao" },
-  { id: "piloto",     nome: "Piloto Nina",   url: piloto.url,     cor: "#9bd4ff", personalidade: "competitivo" },
-  { id: "pirata",     nome: "Pirata Rui",    url: pirata.url,     cor: "#94eec5", personalidade: "sarcastico" },
-  { id: "cientista",  nome: "Cientista Bia", url: cientista.url,  cor: "#b8ef7f", personalidade: "confiante" },
-  { id: "skatista",   nome: "Skatista Léo",  url: skatista.url,   cor: "#c9b3ff", personalidade: "timido" },
-  { id: "diva",       nome: "Diva Duda",     url: diva.url,       cor: "#eaa8ff", personalidade: "confiante" },
-  { id: "robo",       nome: "Robô Bit",      url: robo.url,       cor: "#82e9ff", personalidade: "timido" },
+  { id: "vovo",       nome: "Vovó Nice",     url: "/avatars/vovo.png",       cor: "#ffe86b", personalidade: "brincalhao" },
+  { id: "dj",         nome: "DJ Kiko",       url: "/avatars/dj.png",         cor: "#4fc3f7", personalidade: "confiante" },
+  { id: "detetive",   nome: "Detetive Zé",   url: "/avatars/detetive.png",   cor: "#ffb87a", personalidade: "sarcastico" },
+  { id: "chef",       nome: "Chef Tuti",     url: "/avatars/chef.png",       cor: "#ff5a5f", personalidade: "brincalhao" },
+  { id: "piloto",     nome: "Piloto Nina",   url: "/avatars/piloto.png",     cor: "#9bd4ff", personalidade: "competitivo" },
+  { id: "pirata",     nome: "Pirata Rui",    url: "/avatars/pirata.png",     cor: "#94eec5", personalidade: "sarcastico" },
+  { id: "cientista",  nome: "Cientista Bia", url: "/avatars/cientista.png",  cor: "#b8ef7f", personalidade: "confiante" },
+  { id: "skatista",   nome: "Skatista Léo",  url: "/avatars/skatista.png",   cor: "#c9b3ff", personalidade: "timido" },
+  { id: "diva",       nome: "Diva Duda",     url: "/avatars/diva.png",       cor: "#eaa8ff", personalidade: "confiante" },
+  { id: "robo",       nome: "Robô Bit",      url: "/avatars/robo.png",       cor: "#82e9ff", personalidade: "timido" },
 ];
 
 export function getAvatar(id: string | undefined | null): Avatar {
